@@ -54,7 +54,8 @@ def choroplethCoords():
 
     return coordsDF
 
-def pointCoords():
+# Create school shooting DF
+def schoolShootings():
 
     # Google GEOcode API constants
     api_key = 'AIzaSyBqwyQMdmH_-LZRLxrnLgtlzfenQiV0uoI'
@@ -62,7 +63,7 @@ def pointCoords():
     example_url_new_york = 'https://maps.googleapis.com/maps/api/geocode/json?address=New%20York&region=New%20York&key=AIzaSyBqwyQMdmH_-LZRLxrnLgtlzfenQiV0uoI'
 
     # Read in CSV and create dataframe
-    filepath = "data/raw/school_shootings_1990_2018.csv"
+    filepath = 'data/raw/school_shootings_1990_2018.csv'
     csv = pd.read_csv(filepath)
     df = pd.DataFrame(csv)
 
@@ -77,7 +78,7 @@ def pointCoords():
     # --Parse date and add year column for later manipulation:--
 
     # Create new column
-    skinny_df['Year'] = ''
+    skinny_df = skinny_df.assign(Year='')
 
     # iterate over rows
     for index, row in skinny_df.iterrows():
@@ -88,10 +89,10 @@ def pointCoords():
             skinny_df.iat[index, 4] = int(date + 2000)
         else:
             skinny_df.iat[index, 4] = int(date + 1900)
-    
+
 
     # --add lat, long columns using google maps geocode API:--
-    
+
     # extracts city, state from dataframe, calls API, traverses resulting json and sets new columns to returned values
     # note: code takes about 5 minutes to run (API calls)
 
