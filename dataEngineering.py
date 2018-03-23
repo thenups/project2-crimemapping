@@ -1,5 +1,6 @@
+#################################################
 # Dependencies
-
+#################################################
 import pandas as pd
 import numpy as np
 import requests
@@ -17,6 +18,8 @@ def ucrData():
     # reset index name and reset index
     df.index.names = ['State']
     df = df.reset_index()
+
+    df.to_dict(orient='records')
 
     return df
 
@@ -40,10 +43,10 @@ def choroplethCoords():
 
     # Create dictionary for DF
     allCoords = {
-        'type' : stateType,
-        'stateid' : stateID,
+        'stateType' : stateType,
+        'stateId' : stateID,
         'stateName' : stateName,
-        'geometry' : geometry
+        'geometry' : str(geometry)
         }
 
     # Create DF
