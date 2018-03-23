@@ -53,3 +53,58 @@ def choroplethCoords():
     coordsDF = pd.DataFrame(data=allCoords)
 
     return coordsDF
+
+def pointCoords():
+
+    # Google GEOcode API constants
+    api_key = 'AIzaSyBqwyQMdmH_-LZRLxrnLgtlzfenQiV0uoI'
+    base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
+    example_url_new_york = 'https://maps.googleapis.com/maps/api/geocode/json?address=New%20York&region=New%20York&key=AIzaSyBqwyQMdmH_-LZRLxrnLgtlzfenQiV0uoI'
+
+    # Read in CSV and create dataframe
+    filepath = "data/raw/school_shootings_1990_2018.csv"
+    csv = pd.read_csv(filepath)
+    df = pd.DataFrame(csv)
+
+    # Remove duplicates (True in Dupe column if record is duplicate)
+    df.drop(df[df['Dupe'] == True].index, inplace=True)
+    df = df.reset_index(drop=True)
+
+    # Remove superfluous columns
+    skinny_df = df[['Date', 'City', 'State', 'Fatalities']]
+
+
+    # --Parse date and add year column for later manipulation:--
+
+    # Create new column
+    skinny_df['Year'] = ''
+
+    # iterate over rows
+    for index, row in skinny_df.iterrows():
+        # grab last two digits of date field, cast as int, store
+        date = int(row['Date'][-2:])
+        # if date is under 20, make it 20xx, else 19xx and set that to the row we are on, under Year column
+        if (date < 20):
+            skinny_df.iat[index, 4] = int(date + 2000)
+        else:
+            skinny_df.iat[index, 4] = int(date + 1900)
+    
+
+    # --add lat, long columns using google maps geocode API:--
+    
+    # extracts city, state from dataframe, calls API, traverses resulting json and sets new columns to returned values
+    # note: code takes about 5 minutes to run (API calls)
+
+    for index, row in skinny_df.iterrows():
+        city = row['City']
+        state = row['State']
+        url = base_url + 'address=' + city + '&region=' + state + '&key=' + api_key
+        json = requests.get(url).json()
+        lat = json['results'][0]['geometry']['location']['lat']
+        lng = json['results'][0]['geometry']['location']['lng']
+        skinny_df.loc[index, 'Latitude'] = lat
+        skinny_df.loc[index, 'Longitude'] = lng
+
+    cleaned_dataframe = skinny_df
+
+    return cleaned_dataframe
