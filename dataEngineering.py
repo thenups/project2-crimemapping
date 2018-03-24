@@ -7,9 +7,9 @@ import requests
 import json
 
 # Create UCR DF
-def ucrData():
+def ucrData(csvName):
     # Read files into dataframes
-    filepath = 'data/raw/ucr_violent_crime_rate_by_state.csv'
+    filepath = 'data/raw/' + csvName
     csv = pd.read_csv(filepath)
     df = pd.DataFrame(csv)
 
@@ -75,10 +75,10 @@ def ucrData():
 
     df = df.rename(columns={'State':'state'})
 
-    for column in df:
-        if column != 'state':
-            renamedColumn = 'y'+ str(column)
-            df = df.rename(columns={column:renamedColumn})
+    # for column in df:
+    #     if column != 'state':
+    #         renamedColumn = 'y'+ str(column)
+    #         df = df.rename(columns={column:renamedColumn})
 
     df['stateId'] = df['state'].map(stateIdMapping)
 
