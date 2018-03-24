@@ -16,6 +16,10 @@ import psycopg2
 import os
 from flask_sqlalchemy import SQLAlchemy
 
+# import sys
+# sys.path.insert(0,'/processing')
+from processing.makeGeojson import choropleth_geojson
+
 
 #################################################
 # Engine Setup
@@ -85,10 +89,12 @@ def crimeRate(year):
     results = session.query(*sel).\
         join(State_Coordinates, State_Coordinates.stateId==Ucr.stateId).all()
 
+    geoJson = choropleth_geojson(results)
+
     # print(Ucr.__table__.columns.keys())
     # print(Ucr)
 
-    return jsonify(results)
+    return jsonify(geoJson)
 
 
 
