@@ -5,7 +5,7 @@ import numpy as np
 import requests
 import json
 
-def choropleth_geojson(l):
+def choropleth_geojson(l,y):
 
     features = []
 
@@ -14,8 +14,9 @@ def choropleth_geojson(l):
             {
                 'type': 'Feature',
                 'properties': {
-                    'state': n[0],
-                    'vcr': n[3]
+                    'STATE': n[0],
+                    'VCR': n[3],
+                    'YEAR': int(y)
                 },
             'geometry': {
                 'type': n[1],

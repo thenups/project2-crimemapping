@@ -14,7 +14,7 @@ from sqlalchemy import create_engine, func, inspect, Column, Integer, String
 import psycopg2
 import os
 
-from processing.makeGeojson import choropleth_geojson, shootings_geojson
+from processing.makeGeojson import choropleth_geojson, shootings_geoJSON
 
 
 #################################################
@@ -24,6 +24,9 @@ engine = create_engine(os.environ.get('DATABASE_URL', '') or 'postgres://lqehqdn
 # engine = create_engine('sqlite:///data/data.sqlite', convert_unicode=True, echo=False)
 # engine = create_engine('postgresql://nupur_mathur:1BPdfWvnTSvMGDrPp48u5pQF0@localhost/crime_data')
 
+#################################################
+# Save reference to each table in database
+#################################################
 Base = declarative_base()
 Base.metadata.reflect(engine)
 
@@ -39,7 +42,6 @@ class School_Shootings(Base):
 #################################################
 # Session Setup
 #################################################
-# session = scoped_session(sessionmaker(bind=engine))
 session = Session(bind=engine)
 
 #################################################
@@ -72,17 +74,15 @@ def crimeRate(year):
     results = session.query(*sel).\
         join(State_Coordinates, State_Coordinates.stateId==Ucr.stateId).all()
 
-    geoJson = choropleth_geojson(results)
+    geoJson = choropleth_geojson(results, year)
 
     return jsonify(geoJson)
 
 
 @app.route('/api/v1.0/schoolShootings/<year>')
 def schoolShootings(year):
-    if year == 'all':
-        results = session.query(School_Shootings).all()
-    else:
-        results = session.query(School_Shootings).filter_by(Year=year).all()
+
+    results = session.query(School_Shootings).filter_by(Year=year).all()
 
     # run function on results:
     geoJson = shootings_geojson(results)
