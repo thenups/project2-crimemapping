@@ -61,19 +61,25 @@ def index():
 def crimeRate(year):
     y = 'y' + year
 
+    # Select columns for output
     sel = [
             Ucr.state,
             State_Coordinates.coordType,
             State_Coordinates.coordinates
-      ]
+        ]
 
+    # Iterate through all table columns
     for c in Ucr.__table__.columns:
+        # If table column is the same as the year inputted
         if c == getattr(Ucr,y):
+            # Append it to the selection
             sel.append(c)
 
+    # Query Selection for results (join two tables)
     results = session.query(*sel).\
         join(State_Coordinates, State_Coordinates.stateId==Ucr.stateId).all()
 
+    # Create geoJson
     geoJson = choropleth_geojson(results, year)
 
     return jsonify(geoJson)
