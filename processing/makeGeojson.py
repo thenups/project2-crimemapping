@@ -5,7 +5,7 @@ import numpy as np
 import requests
 import json
 
-def choropleth_geojson(l,y):
+def choropleth_geojson(resultList,year):
 
     features = []
 
