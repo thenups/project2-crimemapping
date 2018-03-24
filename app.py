@@ -4,6 +4,7 @@
 import numpy as np
 
 from flask import Flask, render_template, jsonify, redirect
+from flask_cors import CORS
 
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -48,6 +49,7 @@ session = Session(bind=engine)
 # Flask Setup
 #################################################
 app = Flask(__name__)
+CORS(app)
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or 'postgres://lqehqdnexeuwdi:e299f2b76843b838b81976e7cb183859f28b1cd99e6aa417fdce1340ce00fece@ec2-54-243-210-70.compute-1.amazonaws.com:5432/dbenqc5p6hbe3e'
 
 # Full dashboard
