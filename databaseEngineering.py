@@ -31,11 +31,11 @@ choroplethCoordsData = choroplethCoords()
 schoolShootingsData = schoolShootings()
 
 # Convert DF into DB tables (and create primary key)
-ucrData.to_sql(name='ucr', con=engine, if_exists = 'replace', index=False)
-conn.execute('ALTER TABLE ucr ADD PRIMARY KEY (stateId);')
+ucrData.to_sql(name='ucr', con=engine, if_exists = 'replace', index=True)
+conn.execute('ALTER TABLE ucr ADD PRIMARY KEY (index);')
 
-choroplethCoordsData.to_sql(name='state_coordinates', con=engine, if_exists = 'replace', index=False)
-conn.execute('ALTER TABLE state_coordinates ADD PRIMARY KEY (stateId);')
+choroplethCoordsData.to_sql(name='state_coordinates', con=engine, if_exists = 'replace', index=True)
+conn.execute('ALTER TABLE state_coordinates ADD PRIMARY KEY (index);')
 
 schoolShootingsData.to_sql(name='school_shootings', con=engine, if_exists = 'replace', index=True)
 conn.execute('ALTER TABLE school_shootings ADD PRIMARY KEY (index);')
