@@ -58,7 +58,7 @@ def choroplethCoords():
 def schoolShootings():
 
     # Google GEOcode API constants
-    api_key = 'AIzaSyBqwyQMdmH_-LZRLxrnLgtlzfenQiV0uoI'
+    api_key = 'AIzaSyAeSwgFHJnGt6wTx9rEXmp5yy0QtaIzXiY'
     base_url = 'https://maps.googleapis.com/maps/api/geocode/json?'
     example_url_new_york = 'https://maps.googleapis.com/maps/api/geocode/json?address=New%20York&region=New%20York&key=AIzaSyBqwyQMdmH_-LZRLxrnLgtlzfenQiV0uoI'
 
