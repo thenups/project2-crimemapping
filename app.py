@@ -85,7 +85,7 @@ def schoolShootings(year):
     results = session.query(School_Shootings).filter_by(Year=year).all()
 
     # run function on results:
-    geoJson = shootings_geojson(results)
+    geoJson = shootings_geoJSON(results)
 
     return jsonify(geoJson)
 
