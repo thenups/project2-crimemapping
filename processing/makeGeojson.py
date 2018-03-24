@@ -9,14 +9,14 @@ def choropleth_geojson(resultList,year):
 
     features = []
 
-    for n in l:
+    for n in resultList:
         features.append(
             {
                 'type': 'Feature',
                 'properties': {
                     'STATE': n[0],
                     'VCR': n[3],
-                    'YEAR': int(y)
+                    'YEAR': int(year)
                 },
             'geometry': {
                 'type': n[1],
