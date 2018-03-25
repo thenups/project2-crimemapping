@@ -100,11 +100,13 @@ def choroplethCoords():
 
     # Add data from JSON into lists
     for feature in coordinateJSON['features']:
-        stateID.append(feature['properties']['STATE'])
+        stateID.append(int(feature['properties']['STATE']))
         stateName.append(feature['properties']['NAME'])
+
         c = feature['geometry']['coordinates']
         cdump = json.dumps(c)
         coords.append(cdump)
+
         coordType.append(feature['geometry']['type'])
 
     # Create dictionary for DF
