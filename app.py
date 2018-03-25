@@ -15,8 +15,14 @@ from sqlalchemy import create_engine, func, inspect, Column, Integer, String
 import psycopg2
 import os
 
+from data.databaseEngineering import write_databases
 from processing.makeGeojson import choropleth_geojson, shootings_geoJSON
 
+#################################################
+# Write Databases
+# Do only first time when setting up herokuapp, otherwise, leave commented out
+#################################################
+# write_databases()
 
 #################################################
 # Engine Setup
@@ -31,8 +37,8 @@ engine = create_engine(os.environ.get('DATABASE_URL', '') or 'postgres://lqehqdn
 Base = declarative_base()
 Base.metadata.reflect(engine)
 
-class Ucr(Base):
-    __table__ = Base.metadata.tables['ucr']
+class Vcr(Base):
+    __table__ = Base.metadata.tables['vcr']
 
 class State_Coordinates(Base):
     __table__ = Base.metadata.tables['state_coordinates']
@@ -61,25 +67,25 @@ def index():
 
 @app.route('/api/v1.0/crimeRate/<year>')
 def crimeRate(year):
-    y = 'y' + year
+    # y = 'y' + year
 
     # Select columns for output
     sel = [
-            Ucr.state,
+            Vcr.state,
             State_Coordinates.coordType,
             State_Coordinates.coordinates
         ]
 
     # Iterate through all table columns
-    for c in Ucr.__table__.columns:
+    for c in Vcr.__table__.columns:
         # If table column is the same as the year inputted
-        if c == getattr(Ucr,y):
+        if c == getattr(Vcr,year):
             # Append it to the selection
             sel.append(c)
 
     # Query Selection for results (join two tables)
     results = session.query(*sel).\
-        join(State_Coordinates, State_Coordinates.stateId==Ucr.stateId).all()
+        join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).all()
 
     # Create geoJson
     geoJson = choropleth_geojson(results, year)
