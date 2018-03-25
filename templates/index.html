@@ -1,28 +1,133 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE HTML>
+
+<html lang='en'>
     <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
-        <!-- My CSS -->
-        <link rel="stylesheet" href="../static/css/main.css">
-
-        <title>Hello, world!</title>
+        <meta charset='utf-8'>
+        <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+        <title>Crime to Mass Shootings</title>
+        <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'></script>
+        <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <link rel="stylesheet" href="../static/styles/styles.css">
     </head>
+
     <body>
-        <h1>Hello, world!</h1>
+        <!-- navbar -->
+        <nav class="navbar navbar-toggleable-sm navbar-light bg-faded navbar-full">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <a class="nav-link" id=homeButton href="index.html">Functional_Vice()</a>
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Analysis
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="">Details</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                            <a class="nav-link" href="">Samples</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="">Data</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <!--Mapbox Map Container-->
 
-        <!-- My JS -->
-        <script type="text/javascript" src="../static/js/main.js"></script>
+          <div class='container-fluid'>
+            <div class="row">
+              <div class="col-10">
+                <div class="map-container">
+                <nav id="menu"></nav>
+                <div id='map'></div>
+                <div class='map-overlay' id='legend'></div>
+                <div class='shootings-legend'>
+                  <h2>School Shooting Fatalities</h2>
+                  <div class='row colors'>
+                  </div>
+                  <div class='row labels'>
+                    <div class='label'>0</div>
+                    <div class='label'>1</div>
+                    <div class='label'>2</div>
+                    <div class='label'>3</div>
+                    <div class='label'>4</div>
+                    <div class='label'>5+</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-2" style="margin-left:none;">
+                <div id='features'><h2>Crime Rate per Capita</h2><div id='pd'><p>Hover over a state!</p></div>
+              </div>
+            </div>
+          </div>
+
+        <!-- Map Console -->
+            <div class="row">
+              <div class="col-4">
+                <div id='console'>
+                      <!--To be: Crime Detail Console-->
+                      <h1>Map Filter</h1>
+                      <p>Data: <a href='https://functional-vice.herokuapp.com/api/v1.0/schoolShootings/1995'>School Shootings, </a><a href='https://functional-vice.herokuapp.com/api/v1.0/crimeRate/1995'>School Shootings</a> </p>
+                        <!--To be: Crime Events Scale for reference-->
+
+                        <!--To be: Timeline Slide Bar-->
+                        <div class='session' id='sliderbar'>
+                          <h2>Active Year <label id='active-year'>1990</label></h2>
+                          <input id='slider' class='row' type='range' min='0' max='40' step='1' value='12' />
+                        </div>
+                        <!--Toggle Layers-->
+                        <div class='session'>
+                          <!-- <h2>Category Layers</h2> -->
+                          <div class='row' id='filters'>
+                            <!-- <input id='all' type='radio' name='toggle' value='all' checked='checked'>
+                            <label for='all'>All</label>
+                            <input id='shootings' type='radio' name='toggle' value='weekday'>
+                            <label for='weekday'>Weekday</label>
+                            <input id='weekend' type='radio' name='toggle' value='weekend'>
+                            <label for='weekend'>Weekend</label> -->
+                          </div>
+                        </div>
+                        <!--JavaScript InPut-->
+                      <script type="text/javascript" src="../static/js/app.js"></script>
+                      <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+                      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+                      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+                  </div>
+              </div>
+                <div class="col-6">
+                  <div class="bubble-container">
+                    <p>Bubble Chart</p>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <div class="tweet-container">
+                    <p>Tweet Feed</p>
+                  </div>
+                </div>
+              </div>
+            <div>
+          </div>
+
+        <!--Footer-->
+        <footer class="page-footer">
+              <div class="row" style="background:linear-gradient(90deg,#00ade6 0,#05e3d5)">
+                  <div class="col-12" style="height:5px">
+                  </div>
+              </div>
+                <div class="row" style="background-color:black; height:140px">
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <!--Bootstrap JS/Jquery cdn-->
+
     </body>
 </html>
