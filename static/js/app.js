@@ -30,20 +30,21 @@ for (i = 0; i < layers.length; i++) {
   legend.appendChild(item);
 }
 
-var years = [
-    '1990',
-    '1991',
-    '1992',
-    '1993',
-    '1994',
-    '1995',
-    '1996',
-    '1997',
-    '1998',
-    '1999',
-    '2000',
-    '2001'
-];
+// var years = [
+//     '1990',
+//     '1991',
+//     '1992',
+//     '1993',
+//     '1994',
+//     '1995',
+//     '1996',
+//     '1997',
+//     '1998',
+//     '1999',
+//     '2000',
+//     '2001',
+//     '2002'
+// ];
 
 // Filter by Year Function //
 // function filterBy(year) {
@@ -73,7 +74,7 @@ map.on('load', function() {
     map.addSource('crimeData', {
       type: 'geojson',
       data: 'https://functional-vice.herokuapp.com/api/v1.0/crimeRate/1995'
-  });
+    });
     // shooting fatalities data endpoint //
     map.addSource('shootData', {
       type: 'geojson',
@@ -179,30 +180,41 @@ map.on('load', function() {
         }
     });
 
+    // Filter Through Years //
+    document.getElementById('slider').addEventListener('input', function(e) {
+      var year = parseInt(e.target.value);
+      // update the map
+      map.setFilter('shootings', ['==', ['number', ['get', 'YEAR']], year]);
+      map.setFilter('crime', ['==', ['number', ['get', 'YEAR']], year]);
+
+      document.getElementById('active-year').innerText = year;
+    });
+
     // Setting default filter value //
     // filterBy(0);
-
-    // wait for user input, run function filterBy //
+    //
+    // // wait for user input, run function filterBy //
     // document.getElementById('slider').addEventListener('input', function(e) {
     //     var year = parseInt(e.target.value, 10);
-    //     filterBy(year);
+  //   //     filterBy(year);
   // });
 });
 
 
-// Time slider
+// // Time slider
 // document.getElementById('slider').addEventListener('input', function(e) {
 //   var hour = parseInt(e.target.value);
 //   // update the map
 //   map.setFilter('shootings', ['==', ['number', ['get', 'YEAR']], year]);
 //
 //   document.getElementById('active-year').innerText = year;
+//
+//   // converting 0-23 hour to AMPM format
+//   var ampm = hour >= 12 ? 'PM' : 'AM';
+//   var hour12 = hour % 12 ? hour % 12 : 12;
+//   // update text in the UI
+//   document.getElementById('active-hour').innerText = hour12 + ampm;
 
-  // // converting 0-23 hour to AMPM format
-  // var ampm = hour >= 12 ? 'PM' : 'AM';
-  // var hour12 = hour % 12 ? hour % 12 : 12;
-
-  // update text in the UI
 
 
 // Map/Layer Filter
@@ -222,4 +234,4 @@ map.on('load', function() {
 // });
 
 // Confirming version of active js file
-console.log('hello 2.16')
+console.log('hello 2.17');

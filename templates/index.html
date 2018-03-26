@@ -42,7 +42,7 @@
 
           <div class='container-fluid'>
             <div class="row">
-              <div class="col-10">
+              <div class="col-lg-10 col-sm-12">
                 <div class="map-container">
                 <nav id="menu"></nav>
                 <div id='map'></div>
@@ -62,7 +62,7 @@
                 </div>
               </div>
             </div>
-            <div class="col-2" style="margin-left:none;">
+            <div class="col-lg-2 col-sm-12" style="margin-left:none;">
                 <div id='features'><h2>Crime Rate per Capita</h2><div id='pd'><p>Hover over a state!</p></div>
               </div>
             </div>
@@ -70,17 +70,17 @@
 
         <!-- Map Console -->
             <div class="row">
-              <div class="col-4">
+              <div class="col-lg-4 col-sm-12">
                 <div id='console'>
                       <!--To be: Crime Detail Console-->
                       <h1>Map Filter</h1>
-                      <p>Data: <a href='https://functional-vice.herokuapp.com/api/v1.0/schoolShootings/1995'>School Shootings, </a><a href='https://functional-vice.herokuapp.com/api/v1.0/crimeRate/1995'>School Shootings</a> </p>
+                      <p>Data: <a href='https://functional-vice.herokuapp.com/api/v1.0/schoolShootings/1995'>School Shootings, </a><a href='https://functional-vice.herokuapp.com/api/v1.0/crimeRate/1995'>Crime Rate</a> </p>
                         <!--To be: Crime Events Scale for reference-->
 
                         <!--To be: Timeline Slide Bar-->
                         <div class='session' id='sliderbar'>
                           <h2>Active Year <label id='active-year'>1990</label></h2>
-                          <input id='slider' class='row' type='range' min='0' max='40' step='1' value='12' />
+                          <input id='slider' class='row' type='range' min='1990' max='2016' step='1' value='1995' />
                         </div>
                         <!--Toggle Layers-->
                         <div class='session'>
@@ -101,12 +101,12 @@
                       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
                   </div>
               </div>
-                <div class="col-6">
+                <div class="col-lg-6 col-sm-12">
                   <div class="bubble-container">
                     <p>Bubble Chart</p>
                   </div>
                 </div>
-                <div class="col-2">
+                <div class="col-lg-2 col-sm-12">
                   <div class="tweet-container">
                     <p>Tweet Feed</p>
                   </div>
