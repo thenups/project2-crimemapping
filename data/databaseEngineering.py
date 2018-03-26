@@ -31,12 +31,14 @@ def write_databases():
     schoolShootingsData = schoolShootings()
 
     # Convert DF into DB tables (and create primary key)
+    # conn.execute('DROP TABLE IF EXISTS vcr;')
     ucrData.to_sql(name='vcr', con=engine, if_exists = 'replace', index=True)
     conn.execute('ALTER TABLE vcr ADD PRIMARY KEY (index);')
-    # conn.execute('DROP TABLE IF EXISTS vcr;')
 
+    # conn.execute('DROP TABLE IF EXISTS state_coordinates;')
     choroplethCoordsData.to_sql(name='state_coordinates', con=engine, if_exists = 'replace', index=True)
     conn.execute('ALTER TABLE state_coordinates ADD PRIMARY KEY (index);')
 
+    # conn.execute('DROP TABLE IF EXISTS school_shootings;')
     schoolShootingsData.to_sql(name='school_shootings', con=engine, if_exists = 'replace', index=True)
     conn.execute('ALTER TABLE school_shootings ADD PRIMARY KEY (index);')
