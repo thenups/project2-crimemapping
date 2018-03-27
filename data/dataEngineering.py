@@ -7,9 +7,9 @@ import requests
 import json
 
 # Create UCR DF
-def ucrData(csvName):
+def ucrData(csvPath):
     # Read files into dataframes
-    filepath = 'data/raw/' + csvName
+    filepath = csvPath
     csv = pd.read_csv(filepath)
     df = pd.DataFrame(csv)
 
@@ -219,7 +219,7 @@ def social():
         # print(json.dumps(tweet, sort_keys=True, indent=4, separators=(',', ': ')))
         tweet_id.append(tweet['id'])
         tweet_text.append(tweet["text"])
-    
+
         # Run Vader Analysis on each tweet
         #compound = analyzer.polarity_scores(tweet['text'])["compound"]
         #pos = analyzer.polarity_scores(tweet['text'])["pos"]
@@ -230,6 +230,6 @@ def social():
         #compound_list.append(compound)
         #positive_list.append(pos)
         #negative_list.append(neg)
-        #neutral_list.append(neu) 
+        #neutral_list.append(neu)
 
     return tweet_text

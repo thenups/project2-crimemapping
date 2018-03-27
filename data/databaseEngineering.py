@@ -26,7 +26,7 @@ def write_databases():
     # Add Tables from DFs
     #################################################
     # Create cleaned dataframes from raw sources:
-    vcrData = ucrData('data/raw/ucr_violent_crime_rate_by_state.csv')
+    vcrData = ucrData('raw/ucr_violent_crime_rate_by_state.csv')
     choroplethCoordsData = choroplethCoords()
     schoolShootingsData = schoolShootings()
 
