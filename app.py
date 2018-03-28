@@ -4,6 +4,7 @@
 import numpy as np
 
 from flask import Flask, render_template, jsonify, redirect
+from flask import g
 from flask_cors import CORS
 
 import sqlalchemy
@@ -17,6 +18,10 @@ import os
 
 from data.databaseEngineering import write_databases
 from processing.makeGeojson import choropleth_geojson, shootings_geoJSON
+
+from scipy.interpolate import *
+import scipy
+from scipy.stats import pearsonr
 
 #################################################
 # Write Databases
@@ -156,6 +161,49 @@ def schoolShootings(year):
 
     return jsonify(geoJson)
 
+@app.route('/api/v1.0/national/sum/<dataset1>/<dataset2>')
+def nationalData(dataset1,dataset2):
+
+    def getValues(dataset):
+        class DB(Base):
+            __table__ = Base.metadata.tables[dataset]
+
+        sel = []
+
+        # Select and sum year columns in database
+        for i in range(2004,2015):
+            col = getattr(DB,str(i))
+            sel.append(func.sum(col))
+
+
+        results = session.query(*sel).all()
+
+        cleanedResults = []
+
+        for i in results[0]:
+            cleanedResults.append(float(i))
+
+        return cleanedResults
+
+    value1 = getValues(dataset1)
+    value2 = getValues(dataset2)
+
+    r, p = pearsonr(value1, value2)
+    values = {'r-value':r,'p-value':p}
+
+    return jsonify(values)
+
+
+# @app.route('/api/v1.0/correlation/<value1>/<value2>')
+# def corrTest(value1, value2):
+#
+#     r, p = pearsonr(value1, value2)
+#
+# 	values = {'r-value':r,
+#               'p-value':p
+#               }
+#
+#     return jsonify(values)
 
 if __name__ == '__main__':
     app.run(debug=True)
