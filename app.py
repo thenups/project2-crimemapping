@@ -127,17 +127,18 @@ def crime(year):
     #         # Append it to the selection
     #         sel.append(c)
 
-    # Query Selection for results (join two tables)
-    results = session.query(*sel).\
-        join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).all()
-
+    # # Query Selection for results (join two tables)
     # results = session.query(*sel).\
-    #     join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).\
-    #     join(Violent_crime, Violent_Crime.stateId==State_Coordinates.stateId).\
-    #     join(Unemployment, Unemployment.stateId==Population.stateId).\
-    #     join(Population, Population.stateId==Murder.stateId).\
-    #     join(Murder, Murder.stateId==Median_Household_Income_Stderr.stateId).\
-    #     join(Median_Household_Income_Stderr, Median_Household_Income_Stderr.stateId==Median_Household_Income.stateId).all()
+    #     join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).all()
+
+    results = session.query(*sel).\
+        join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).\
+        join(Violent_Crime, Violent_Crime.stateId==Vcr.stateId).\
+        join(Unemployment, Unemployment.stateId==Vcr.stateId).\
+        join(Population, Population.stateId==Vcr.stateId).\
+        join(Murder, Murder.stateId==Vcr.stateId).\
+        join(Median_Household_Income, Median_Household_Income.stateId==Vcr.stateId).\
+        join(Median_Household_Income_Stderr, Median_Household_Income_Stderr.stateId==Vcr.stateId).all()
 
     # Create geoJson
     geoJson = choropleth_geojson(results, year)
