@@ -19,6 +19,7 @@ def ucrData(csvPath):
     df.index.names = ['State']
     df = df.reset_index()
 
+    # Create state ID mapping
     stateIdMapping = {'Alabama': '01',
                     'Alaska': '02',
                     'Arizona': '04',
@@ -73,17 +74,11 @@ def ucrData(csvPath):
                     'Wyoming': '56'
                     }
 
+    # Rename state column
     df = df.rename(columns={'State':'state'})
 
-    # for column in df:
-    #     if column != 'state':
-    #         renamedColumn = 'y'+ str(column)
-    #         df = df.rename(columns={column:renamedColumn})
-
+    # Add state ID mapping
     df['stateId'] = df['state'].map(stateIdMapping)
-
-    # df = df.set_index('state').T
-    # df = df.reset_index()
 
     return df
 
@@ -134,7 +129,7 @@ def schoolShootings():
     example_url_new_york = 'https://maps.googleapis.com/maps/api/geocode/json?address=New%20York&region=New%20York&key=AIzaSyBqwyQMdmH_-LZRLxrnLgtlzfenQiV0uoI'
 
     # Read in CSV and create dataframe
-    filepath = 'data/raw/school_shootings_1990_2018.csv'
+    filepath = 'raw/school_shootings_1990_2018.csv'
     csv = pd.read_csv(filepath)
     df = pd.DataFrame(csv)
 
@@ -180,3 +175,34 @@ def schoolShootings():
     cleaned_dataframe = skinny_df
 
     return cleaned_dataframe
+
+def foreclosureData():
+    # Read files into dataframes
+    filepath = 'raw/foreclosure.csv'
+    csv = pd.read_csv(filepath)
+    df = pd.DataFrame(csv)
+
+    # Re-name columns
+    df = df.rename(columns={'Home_repos':'home_repos'})
+
+    return df
+
+def snapData():
+    # Read files into dataframes
+    filepath = "raw/snap_data.csv"
+    csv = pd.read_csv(filepath)
+    df = pd.DataFrame(csv)
+
+    columnRenaming = {
+        'Fiscal Year':'year',
+        'Average Participation':'average_participation',
+        'Average Benefit Per Person 1]':'average_benefit_per_person',
+        'Total Benefits':'total_benefits',
+        'All Other Costs 2]':'all_other_costs',
+        'Total Costs':'total_costs'
+    }
+
+    # Re-name columns
+    df = df.rename(columns=columnRenaming)
+
+    return df

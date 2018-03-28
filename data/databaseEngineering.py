@@ -9,7 +9,7 @@ from sqlalchemy import create_engine, MetaData, func #connect to database
 from sqlalchemy.orm import Session
 from sqlalchemy.ext.automap import automap_base
 # import pymysql
-from data.dataEngineering import choroplethCoords, ucrData, schoolShootings
+from data.dataEngineering import choroplethCoords, ucrData, schoolShootings, foreclosureData, snapData
 
 def write_databases():
     #################################################
@@ -31,37 +31,50 @@ def write_databases():
     #### VIOLENT CRIME RATE ####
     vcrData = ucrData('raw/ucr_violent_crime_rate_by_state.csv')
     # conn.execute('DROP TABLE IF EXISTS vcr;')
-    ucrData.to_sql(name='vcr', con=engine, if_exists ='replace', index=True)
-    conn.execute('ALTER TABLE vcr ADD PRIMARY KEY (index);')
+    vcrData.to_sql(name='vcr', con=engine, if_exists ='replace', index=False)
+    conn.execute('ALTER TABLE vcr ADD PRIMARY KEY ("stateId");')
     ####################
 
-    #### VIOLENT CRIME RATE ####
+    #### VIOLENT CRIME ####
     violentCrimeData = ucrData('raw/ucr_violent_crime_total.csv')
     # conn.execute('DROP TABLE IF EXISTS violent_crime;')
-    violentCrimeData.to_sql(name='violent_crime', con=engine, if_exists = 'replace', index=True)
-    conn.execute('ALTER TABLE violent_crime ADD PRIMARY KEY (index);')
+    violentCrimeData.to_sql(name='violent_crime', con=engine, if_exists = 'replace', index=False)
+    conn.execute('ALTER TABLE violent_crime ADD PRIMARY KEY ("stateId");')
     ####################
 
     #### MURDER ####
     murderData = ucrData('raw/ucr_murder_and_nonnegligent_manslaughter.csv')
-    violentCrimeData = ucrData('raw/ucr_violent_crime_total.csv')
     # conn.execute('DROP TABLE IF EXISTS violent_crime;')
-    violentCrimeData.to_sql(name='violent_crime', con=engine, if_exists = 'replace', index=True)
-    conn.execute('ALTER TABLE violent_crime ADD PRIMARY KEY (index);')
+    murderData.to_sql(name='murder', con=engine, if_exists = 'replace', index=False)
+    conn.execute('ALTER TABLE murder ADD PRIMARY KEY ("stateId");')
     ####################
 
     #### UNEMPLOYMENT ####
     unemploymentData = ucrData('raw/clean_unemployment_by_state.csv')
     # conn.execute('DROP TABLE IF EXISTS unemployment;')
-    unemploymentData.to_sql(name='unemployment', con=engine, if_exists ='replace', index=True)
-    conn.execute('ALTER TABLE unemployment ADD PRIMARY KEY (index);')
+    unemploymentData.to_sql(name='unemployment', con=engine, if_exists ='replace', index=False)
+    conn.execute('ALTER TABLE unemployment ADD PRIMARY KEY ("stateId");')
     ####################
 
     #### POPULATION ####
     populationData = ucrData('raw/clean_population_by_year.csv')
     # conn.execute('DROP TABLE IF EXISTS population;')
-    populationData.to_sql(name='population', con=engine, if_exists = 'replace', index=True)
-    conn.execute('ALTER TABLE population ADD PRIMARY KEY (index);')
+    populationData.to_sql(name='population', con=engine, if_exists = 'replace', index=False)
+    conn.execute('ALTER TABLE population ADD PRIMARY KEY ("stateId");')
+    ####################
+
+    #### MEDIAN HOUSEHOLD INCOME ####
+    medHouseIncomeData = ucrData('raw/clean_census_median_household_income.csv')
+    # conn.execute('DROP TABLE IF EXISTS median_household_income;')
+    medHouseIncomeData.to_sql(name='median_household_income', con=engine, if_exists = 'replace', index=False)
+    conn.execute('ALTER TABLE median_household_income ADD PRIMARY KEY ("stateId");')
+    ####################
+
+    #### MEDIAN HOUSEHOLD INCOME STANDARD ERROR ####
+    medHouseIncomeStderrData = ucrData('raw/clean_census_median_household_income_stderr.csv')
+    # conn.execute('DROP TABLE IF EXISTS median_household_income_stderr;')
+    medHouseIncomeStderrData.to_sql(name='median_household_income_stderr', con=engine, if_exists = 'replace', index=True)
+    conn.execute('ALTER TABLE median_household_income_stderr ADD PRIMARY KEY ("stateId");')
     ####################
 
     #### STATE COORDINATES ####
@@ -78,16 +91,16 @@ def write_databases():
     conn.execute('ALTER TABLE school_shootings ADD PRIMARY KEY (index);')
     ####################
 
-    #### MEDIAN HOUSEHOLD INCOME ####
-    medHouseIncomeStderrData = ucrData('raw/clean_census_median_household_income_stderr.csv')
-    # conn.execute('DROP TABLE IF EXISTS median_household_income_stderr;')
-    medHouseIncomeStderrData.to_sql(name='median_household_income_stderr', con=engine, if_exists = 'replace', index=True)
-    conn.execute('ALTER TABLE median_household_income_stderr ADD PRIMARY KEY (index);')
+    #### FORECLOSURES ####
+    foreclosureData = foreclosureData()
+    # conn.execute('DROP TABLE IF EXISTS foreclosure;')
+    foreclosureData.to_sql(name='foreclosure', con=engine, if_exists = 'replace', index=True)
+    conn.execute('ALTER TABLE foreclosure ADD PRIMARY KEY (index);')
     ####################
 
-    #### MEDIAN HOUSEHOLD INCOME STANDARD ERROR ####
-    medHouseIncomeStderrData = ucrData('raw/clean_census_median_household_income_stderr.csv')
-    # conn.execute('DROP TABLE IF EXISTS median_household_income_stderr;')
-    medHouseIncomeStderrData.to_sql(name='median_household_income_stderr', con=engine, if_exists = 'replace', index=True)
-    conn.execute('ALTER TABLE median_household_income_stderr ADD PRIMARY KEY (index);')
+    #### SNAP ####
+    snapData = snapData()
+    # conn.execute('DROP TABLE IF EXISTS snap;')
+    snapData.to_sql(name='snap', con=engine, if_exists = 'replace', index=True)
+    conn.execute('ALTER TABLE snap ADD PRIMARY KEY (index);')
     ####################
