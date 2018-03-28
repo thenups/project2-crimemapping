@@ -16,6 +16,12 @@ def choropleth_geojson(resultList,year):
                 'properties': {
                     'STATE': n[0],
                     'VCR': n[3],
+                    'VIOLENT_CRIME': n[4],
+                    'UNEMPLOYMENT':n[5],
+                    'POPULATION':n[6],
+                    'MURDER':n[7],
+                    'MEDIAN_HOUSEHOLD_INCOME':n[8],
+                    'MEDIAN_HOUSEHOLD_INCOME_STDERR':n[9],
                     'YEAR': int(year)
                 },
             'geometry': {

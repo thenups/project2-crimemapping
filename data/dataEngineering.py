@@ -6,6 +6,61 @@ import numpy as np
 import requests
 import json
 
+# Create state ID mapping
+stateIdMapping = {'Alabama': '01',
+                'Alaska': '02',
+                'Arizona': '04',
+                'Arkansas': '05',
+                'California': '06',
+                'Colorado': '08',
+                'Connecticut': '09',
+                'Delaware': '10',
+                'District of Columbia': '11',
+                'Florida': '12',
+                'Georgia': '13',
+                'Hawaii': '15',
+                'Idaho': '16',
+                'Illinois': '17',
+                'Indiana': '18',
+                'Iowa': '19',
+                'Kansas': '20',
+                'Kentucky': '21',
+                'Louisiana': '22',
+                'Maine': '23',
+                'Maryland': '24',
+                'Massachusetts': '25',
+                'Michigan': '26',
+                'Minnesota': '27',
+                'Mississippi': '28',
+                'Missouri': '29',
+                'Montana': '30',
+                'Nebraska': '31',
+                'Nevada': '32',
+                'New Hampshire': '33',
+                'New Jersey': '34',
+                'New Mexico': '35',
+                'New York': '36',
+                'North Carolina': '37',
+                'North Dakota': '38',
+                'Ohio': '39',
+                'Oklahoma': '40',
+                'Oregon': '41',
+                'Pennsylvania': '42',
+                'Puerto Rico': '72',
+                'Rhode Island': '44',
+                'South Carolina': '45',
+                'South Dakota': '46',
+                'Tennessee': '47',
+                'Texas': '48',
+                'Utah': '49',
+                'Vermont': '50',
+                'Virginia': '51',
+                'Washington': '53',
+                'West Virginia': '54',
+                'Wisconsin': '55',
+                'Wyoming': '56'
+                }
+
 # Create UCR DF
 def ucrData(csvPath):
     # Read files into dataframes
@@ -19,60 +74,6 @@ def ucrData(csvPath):
     df.index.names = ['State']
     df = df.reset_index()
 
-    # Create state ID mapping
-    stateIdMapping = {'Alabama': '01',
-                    'Alaska': '02',
-                    'Arizona': '04',
-                    'Arkansas': '05',
-                    'California': '06',
-                    'Colorado': '08',
-                    'Connecticut': '09',
-                    'Delaware': '10',
-                    'District of Columbia': '11',
-                    'Florida': '12',
-                    'Georgia': '13',
-                    'Hawaii': '15',
-                    'Idaho': '16',
-                    'Illinois': '17',
-                    'Indiana': '18',
-                    'Iowa': '19',
-                    'Kansas': '20',
-                    'Kentucky': '21',
-                    'Louisiana': '22',
-                    'Maine': '23',
-                    'Maryland': '24',
-                    'Massachusetts': '25',
-                    'Michigan': '26',
-                    'Minnesota': '27',
-                    'Mississippi': '28',
-                    'Missouri': '29',
-                    'Montana': '30',
-                    'Nebraska': '31',
-                    'Nevada': '32',
-                    'New Hampshire': '33',
-                    'New Jersey': '34',
-                    'New Mexico': '35',
-                    'New York': '36',
-                    'North Carolina': '37',
-                    'North Dakota': '38',
-                    'Ohio': '39',
-                    'Oklahoma': '40',
-                    'Oregon': '41',
-                    'Pennsylvania': '42',
-                    'Puerto Rico': '72',
-                    'Rhode Island': '44',
-                    'South Carolina': '45',
-                    'South Dakota': '46',
-                    'Tennessee': '47',
-                    'Texas': '48',
-                    'Utah': '49',
-                    'Vermont': '50',
-                    'Virginia': '51',
-                    'Washington': '53',
-                    'West Virginia': '54',
-                    'Wisconsin': '55',
-                    'Wyoming': '56'
-                    }
 
     # Rename state column
     df = df.rename(columns={'State':'state'})
@@ -88,14 +89,12 @@ def choroplethCoords():
     coordinateJSON = requests.get('http://eric.clst.org/assets/wiki/uploads/Stuff/gz_2010_us_040_00_20m.json').json()
 
     # Create lists to insert into dataframe
-    stateID = []
     stateName = []
     coords = []
     coordType = []
 
     # Add data from JSON into lists
     for feature in coordinateJSON['features']:
-        stateID.append(int(feature['properties']['STATE']))
         stateName.append(feature['properties']['NAME'])
 
         c = feature['geometry']['coordinates']
@@ -106,7 +105,6 @@ def choroplethCoords():
 
     # Create dictionary for DF
     allCoords = {
-        'stateId' : stateID,
         'state' : stateName,
         'coordinates' : coords,
         'coordType' : coordType
@@ -115,8 +113,8 @@ def choroplethCoords():
     # Create DF
     df = pd.DataFrame(data=allCoords)
 
-    # Set index
-    # df = df.set_index('stateId')
+    # Add state ID mapping
+    df['stateId'] = df['state'].map(stateIdMapping)
 
     return df
 
