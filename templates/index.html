@@ -95,20 +95,58 @@
                           </div>
                         </div>
                         <!--JavaScript InPut-->
+                      <!--SWITCH BACK TO PROPER APP.JS FOLDER AFTER DEVELOPMENT-->  
+                      
                       <script type="text/javascript" src="../static/js/app.js"></script>
+                      <script type="text/javascript" src="../static/js/correlation.js"></script>
                       <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
                       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
                       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+                      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
                   </div>
               </div>
                 <div class="col-lg-6 col-sm-12">
                   <div class="bubble-container">
-                    <p>Bubble Chart</p>
+                      <p>Bubble Plot</p>
                   </div>
                 </div>
                 <div class="col-lg-2 col-sm-12">
                   <div class="tweet-container">
                     <p>Tweet Feed</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-sm-12">
+                  <div class="selection-container">
+                    <form name="select_datasets">
+                      <b>Pick Two Datasets to Gauge Correlation</b> 
+                      <br>
+                      <br>                     
+                      <input class="set_checkbox" type="checkbox" name="violent_crime" onClick="return keepCount()"> Violent Crime
+                      <br> 
+                      <input class="set_checkbox" type="checkbox" name="murder" onClick="return keepCount()"> Murder
+                      <br>  
+                      <input class="set_checkbox" type="checkbox" name="population" onClick="return keepCount()"> Population
+                      <br> 
+                      <input class="set_checkbox" type="checkbox" name="school_shootings" onClick="return keepCount()"> School Shootings
+                      <br>
+                      <input class="set_checkbox" type="checkbox" name="foreclosure" onClick="return keepCount()"> Foreclosure
+                      <br>
+                      <input class="set_checkbox" type="checkbox" name="snap" onClick="return keepCount()"> Food Stamp Participation
+                      <br>
+                      <br>
+                      <input type="button" value="Check Correlation" onClick="displayGauge()">
+                      <br>
+                    </form>
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                  <div id="r_gauge">
+                  </div>
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                  <div id="p_gauge">
                   </div>
                 </div>
               </div>
