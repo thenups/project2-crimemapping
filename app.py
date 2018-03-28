@@ -37,14 +37,42 @@ engine = create_engine(os.environ.get('DATABASE_URL', '') or 'postgres://lqehqdn
 Base = declarative_base()
 Base.metadata.reflect(engine)
 
+# State Data
 class Vcr(Base):
     __table__ = Base.metadata.tables['vcr']
 
+class Violent_Crime(Base):
+    __table__ = Base.metadata.tables['violent_crime']
+
+class Unemployment(Base):
+    __table__ = Base.metadata.tables['unemployment']
+
+class Population(Base):
+    __table__ = Base.metadata.tables['population']
+
+class Murder(Base):
+    __table__ = Base.metadata.tables['murder']
+
+class Median_Household_Income_Stderr(Base):
+    __table__ = Base.metadata.tables['median_household_income_stderr']
+
+class Median_Household_Income(Base):
+    __table__ = Base.metadata.tables['median_household_income']
+
+# State outline
 class State_Coordinates(Base):
     __table__ = Base.metadata.tables['state_coordinates']
 
+# Point Data
 class School_Shootings(Base):
     __table__ = Base.metadata.tables['school_shootings']
+
+# Annual Data
+class Snap(Base):
+    __table__ = Base.metadata.tables['snap']
+
+class Foreclosure(Base):
+    __table__ = Base.metadata.tables['foreclosure']
 
 #################################################
 # Session Setup
@@ -56,7 +84,6 @@ session = Session(bind=engine)
 #################################################
 app = Flask(__name__)
 CORS(app)
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or 'postgres://lqehqdnexeuwdi:e299f2b76843b838b81976e7cb183859f28b1cd99e6aa417fdce1340ce00fece@ec2-54-243-210-70.compute-1.amazonaws.com:5432/dbenqc5p6hbe3e'
 
 # Full dashboard
 @app.route('/')
@@ -65,9 +92,8 @@ def index():
 
     return render_template('index.html')
 
-@app.route('/api/v1.0/crimeRate/<year>')
-def crimeRate(year):
-    # y = 'y' + year
+@app.route('/api/v1.0/crime/<year>')
+def crime(year):
 
     # Select columns for output
     sel = [
@@ -76,16 +102,42 @@ def crimeRate(year):
             State_Coordinates.coordinates
         ]
 
-    # Iterate through all table columns
-    for c in Vcr.__table__.columns:
-        # If table column is the same as the year inputted
-        if c == getattr(Vcr,year):
-            # Append it to the selection
-            sel.append(c)
+    # All tables to iterate through
+    tables = [[Vcr.__table__.columns, Vcr],
+              [Violent_Crime.__table__.columns, Violent_Crime],
+              [Unemployment.__table__.columns, Unemployment],
+              [Population.__table__.columns, Population],
+              [Murder.__table__.columns, Murder],
+              [Median_Household_Income_Stderr.__table__.columns, Median_Household_Income_Stderr],
+              [Median_Household_Income.__table__.columns, Median_Household_Income]
+    ]
+
+    for i in tables:
+        # Iterate through all table columns
+        for c in i[0]:
+            # If table column is the same as the year inputted
+            if c == getattr(i[1],year):
+                # Append it to the selection
+                sel.append(c)
+
+    # # Iterate through all table columns
+    # for c in Vcr.__table__.columns:
+    #     # If table column is the same as the year inputted
+    #     if c == getattr(Vcr,year):
+    #         # Append it to the selection
+    #         sel.append(c)
 
     # Query Selection for results (join two tables)
     results = session.query(*sel).\
         join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).all()
+
+    # results = session.query(*sel).\
+    #     join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).\
+    #     join(Violent_crime, Violent_Crime.stateId==State_Coordinates.stateId).\
+    #     join(Unemployment, Unemployment.stateId==Population.stateId).\
+    #     join(Population, Population.stateId==Murder.stateId).\
+    #     join(Murder, Murder.stateId==Median_Household_Income_Stderr.stateId).\
+    #     join(Median_Household_Income_Stderr, Median_Household_Income_Stderr.stateId==Median_Household_Income.stateId).all()
 
     # Create geoJson
     geoJson = choropleth_geojson(results, year)
