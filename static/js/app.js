@@ -188,6 +188,7 @@ map.on('load', function() {
       map.setFilter('crime', ['==', ['number', ['get', 'YEAR']], year]);
 
       document.getElementById('active-year').innerText = year;
+      
     });
 
     // Setting default filter value //
@@ -234,4 +235,4 @@ map.on('load', function() {
 // });
 
 // Confirming version of active js file
-console.log('hello 2.17');
+console.log('hello 2.18');
