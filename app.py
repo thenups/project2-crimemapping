@@ -6,6 +6,7 @@ import numpy as np
 from flask import Flask, render_template, jsonify, redirect
 from flask import g
 from flask_cors import CORS
+from flask_compress import Compress
 
 import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
@@ -17,11 +18,14 @@ import psycopg2
 import os
 
 from data.databaseEngineering import write_databases
-from processing.makeGeojson import choropleth_geojson, shootings_geoJSON
+# from processing.makeGeojson import choropleth_geojson, shootings_geoJSON
+from processing.makeGeojson import *
 
 from scipy.interpolate import *
 import scipy
 from scipy.stats import pearsonr
+
+
 
 #################################################
 # Write Databases
@@ -43,9 +47,6 @@ Base = declarative_base()
 Base.metadata.reflect(engine)
 
 # State Data
-class Vcr(Base):
-    __table__ = Base.metadata.tables['vcr']
-
 class Violent_Crime(Base):
     __table__ = Base.metadata.tables['violent_crime']
 
@@ -58,19 +59,13 @@ class Population(Base):
 class Murder(Base):
     __table__ = Base.metadata.tables['murder']
 
-class Median_Household_Income_Stderr(Base):
-    __table__ = Base.metadata.tables['median_household_income_stderr']
-
-class Median_Household_Income(Base):
-    __table__ = Base.metadata.tables['median_household_income']
+# Point Data
+class School_Shootings(Base):
+    __table__ = Base.metadata.tables['school_shootings']
 
 # State outline
 class State_Coordinates(Base):
     __table__ = Base.metadata.tables['state_coordinates']
-
-# Point Data
-class School_Shootings(Base):
-    __table__ = Base.metadata.tables['school_shootings']
 
 # Annual Data
 class Snap(Base):
@@ -88,6 +83,7 @@ session = Session(bind=engine)
 # Flask Setup
 #################################################
 app = Flask(__name__)
+Compress(app)
 CORS(app)
 
 # Full dashboard
@@ -102,20 +98,17 @@ def crime(year):
 
     # Select columns for output
     sel = [
-            Vcr.state,
+            State_Coordinates.state,
             State_Coordinates.coordType,
             State_Coordinates.coordinates
         ]
 
     # All tables to iterate through
-    tables = [[Vcr.__table__.columns, Vcr],
-              [Violent_Crime.__table__.columns, Violent_Crime],
+    tables = [[Violent_Crime.__table__.columns, Violent_Crime],
               [Unemployment.__table__.columns, Unemployment],
               [Population.__table__.columns, Population],
-              [Murder.__table__.columns, Murder],
-              [Median_Household_Income_Stderr.__table__.columns, Median_Household_Income_Stderr],
-              [Median_Household_Income.__table__.columns, Median_Household_Income]
-    ]
+              [Murder.__table__.columns, Murder]
+             ]
 
     for i in tables:
         # Iterate through all table columns
@@ -137,13 +130,10 @@ def crime(year):
     #     join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).all()
 
     results = session.query(*sel).\
-        join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).\
-        join(Violent_Crime, Violent_Crime.stateId==Vcr.stateId).\
-        join(Unemployment, Unemployment.stateId==Vcr.stateId).\
-        join(Population, Population.stateId==Vcr.stateId).\
-        join(Murder, Murder.stateId==Vcr.stateId).\
-        join(Median_Household_Income, Median_Household_Income.stateId==Vcr.stateId).\
-        join(Median_Household_Income_Stderr, Median_Household_Income_Stderr.stateId==Vcr.stateId).all()
+        join(Violent_Crime, Violent_Crime.stateId==State_Coordinates.stateId).\
+        join(Unemployment, Unemployment.stateId==State_Coordinates.stateId).\
+        join(Population, Population.stateId==State_Coordinates.stateId).\
+        join(Murder, Murder.stateId==State_Coordinates.stateId).all()
 
     # Create geoJson
     geoJson = choropleth_geojson(results, year)
@@ -164,7 +154,37 @@ def schoolShootings(year):
 @app.route('/api/v1.0/national/sum/<dataset1>/<dataset2>')
 def nationalData(dataset1,dataset2):
 
+    def unpackTuples(results):
+        cleanedResults = []
+
+        # Unpack tuple
+        for i in results:
+            cleanedResults.append(float(i[0]))
+
+        return cleanedResults
+
+    def ifSnap(dataset):
+
+        sel = [Snap.average_participation]
+
+        results = session.query(*sel).\
+                  filter(Snap.year>2003).\
+                  filter(Snap.year<2015).all()
+
+        return unpackTuples(results)
+
+    def ifForeclosure(dataset):
+
+        sel = [Foreclosure.foreclosure_filings]
+
+        results = session.query(*sel).\
+                  filter(Foreclosure.year>2003).\
+                  filter(Foreclosure.year<2015).all()
+
+        return unpackTuples(results)
+
     def getValues(dataset):
+        # Model table
         class DB(Base):
             __table__ = Base.metadata.tables[dataset]
 
@@ -175,35 +195,39 @@ def nationalData(dataset1,dataset2):
             col = getattr(DB,str(i))
             sel.append(func.sum(col))
 
-
+        # Query database
         results = session.query(*sel).all()
 
         cleanedResults = []
 
+        # Unpack tuple
         for i in results[0]:
             cleanedResults.append(float(i))
 
         return cleanedResults
 
-    value1 = getValues(dataset1)
-    value2 = getValues(dataset2)
+    datasetList = [dataset1,dataset2]
 
-    r, p = pearsonr(value1, value2)
-    values = {'r-value':r,'p-value':p}
+    v = {}
 
-    return jsonify(values)
+    for d in datasetList:
+        if d == 'foreclosure':
+            v[d] = ifForeclosure(d)
+        elif d == 'snap':
+            v[d] = ifSnap(d)
+        else:
+            v[d] = getValues(d)
+
+    valueList = list(v.values())
+
+    r, p = pearsonr(valueList[0], valueList[1])
+
+    v['r-value'] = r
+    v['p-value'] = p
+
+    return jsonify(v)
 
 
-# @app.route('/api/v1.0/correlation/<value1>/<value2>')
-# def corrTest(value1, value2):
-#
-#     r, p = pearsonr(value1, value2)
-#
-# 	values = {'r-value':r,
-#               'p-value':p
-#               }
-#
-#     return jsonify(values)
 
 if __name__ == '__main__':
     app.run(debug=True)
