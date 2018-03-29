@@ -93,6 +93,12 @@ def index():
 
     return render_template('index.html')
 
+@app.route('/gauges_tweets')
+def gauges_tweets():
+    """Return the gauges/tweets page"""
+
+    return render_template('gauges_tweets.html')
+
 @app.route('/api/v1.0/crime/<year>')
 def crime(year):
 

@@ -9,6 +9,10 @@ School shootings have become more commonplace than we ever imagined in todays so
 - [UCR Data tool](http://www.ucrdatatool.gov)
 - [Kaggle - School Shootings](https://www.kaggle.com/ecodan/school-shootings-us-1990present/data)
 - [Kaggle - Crime Rates](https://www.kaggle.com/marshallproject/crime-rates)
+- [ericTech - State Geometry](http://eric.clst.org/tech/usgeojson/)
+- [US Census Bureau - Current Population Survey, Annual Social and Economic Supplements](http://www.census.gov)
+- [Iowa State University - Annual Unemployment Rates by State](https://www.icip.iastate.edu/tables/employment/unemployment-states)
+
 
 ### Inspiring Visualizations
 Heatmap or slide showing trending Twitter feeds relating to crime:
