@@ -28,13 +28,6 @@ def write_databases():
     # Create cleaned dataframes from raw sources
     # Convert DF into DB tables (and create primary key)
 
-    #### VIOLENT CRIME RATE ####
-    vcrData = ucrData('raw/ucr_violent_crime_rate_by_state.csv')
-    # conn.execute('DROP TABLE IF EXISTS vcr;')
-    vcrData.to_sql(name='vcr', con=engine, if_exists ='replace', index=False)
-    conn.execute('ALTER TABLE vcr ADD PRIMARY KEY ("stateId");')
-    ####################
-
     #### VIOLENT CRIME ####
     violentCrimeData = ucrData('raw/ucr_violent_crime_total.csv')
     violentCrimeData.to_sql(name='violent_crime', con=engine, if_exists = 'replace', index=False)
@@ -57,18 +50,6 @@ def write_databases():
     populationData = ucrData('raw/clean_population_by_year.csv')
     populationData.to_sql(name='population', con=engine, if_exists = 'replace', index=False)
     conn.execute('ALTER TABLE population ADD PRIMARY KEY ("stateId");')
-    ####################
-
-    #### MEDIAN HOUSEHOLD INCOME ####
-    medHouseIncomeData = ucrData('raw/clean_census_median_household_income.csv')
-    medHouseIncomeData.to_sql(name='median_household_income', con=engine, if_exists = 'replace', index=False)
-    conn.execute('ALTER TABLE median_household_income ADD PRIMARY KEY ("stateId");')
-    ####################
-
-    #### MEDIAN HOUSEHOLD INCOME STANDARD ERROR ####
-    medHouseIncomeStderrData = ucrData('raw/clean_census_median_household_income_stderr.csv')
-    medHouseIncomeStderrData.to_sql(name='median_household_income_stderr', con=engine, if_exists = 'replace', index=False)
-    conn.execute('ALTER TABLE median_household_income_stderr ADD PRIMARY KEY ("stateId");')
     ####################
 
     #### STATE COORDINATES ####
