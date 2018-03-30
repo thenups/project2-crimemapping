@@ -20,6 +20,7 @@ import os
 from data.databaseEngineering import write_databases
 # from processing.makeGeojson import choropleth_geojson, shootings_geoJSON
 from processing.makeGeojson import *
+from processing.nationalData import *
 
 from scipy.interpolate import *
 import scipy
@@ -47,6 +48,9 @@ Base = declarative_base()
 Base.metadata.reflect(engine)
 
 # State Data
+class Vcr(Base):
+    __table__ = Base.metadata.tables['vcr']
+
 class Violent_Crime(Base):
     __table__ = Base.metadata.tables['violent_crime']
 
@@ -93,11 +97,29 @@ def index():
 
     return render_template('index.html')
 
-@app.route('/gauges_tweets')
+@app.route('/map')
+def map():
+    """Return the map page"""
+
+    return render_template('map.html')
+
+@app.route('/gaugepage')
 def gauges_tweets():
     """Return the gauges/tweets page"""
 
-    return render_template('gauges_tweets.html')
+    return render_template('guagepage.html')
+
+@app.route('/analysis')
+def analysis():
+    """Return the analysis page"""
+
+    return render_template('analysis.html')
+
+@app.route('/bios')
+def bios():
+    """Return the bios page"""
+
+    return render_template('bios.html')
 
 @app.route('/api/v1.0/crime/<year>')
 def crime(year):
@@ -110,12 +132,14 @@ def crime(year):
         ]
 
     # All tables to iterate through
-    tables = [[Violent_Crime.__table__.columns, Violent_Crime],
+    tables = [[Vcr.__table__.columns,Vcr],
+              [Violent_Crime.__table__.columns, Violent_Crime],
               [Unemployment.__table__.columns, Unemployment],
               [Population.__table__.columns, Population],
               [Murder.__table__.columns, Murder]
              ]
 
+    # For each table
     for i in tables:
         # Iterate through all table columns
         for c in i[0]:
@@ -124,18 +148,9 @@ def crime(year):
                 # Append it to the selection
                 sel.append(c)
 
-    # # Iterate through all table columns
-    # for c in Vcr.__table__.columns:
-    #     # If table column is the same as the year inputted
-    #     if c == getattr(Vcr,year):
-    #         # Append it to the selection
-    #         sel.append(c)
-
-    # # Query Selection for results (join two tables)
-    # results = session.query(*sel).\
-    #     join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).all()
-
+    # Query selction and join all required tables
     results = session.query(*sel).\
+        join(Vcr, Vcr.stateId==State_Coordinates.stateId).\
         join(Violent_Crime, Violent_Crime.stateId==State_Coordinates.stateId).\
         join(Unemployment, Unemployment.stateId==State_Coordinates.stateId).\
         join(Population, Population.stateId==State_Coordinates.stateId).\
@@ -159,58 +174,6 @@ def schoolShootings(year):
 
 @app.route('/api/v1.0/national/sum/<dataset1>/<dataset2>')
 def nationalData(dataset1,dataset2):
-
-    def unpackTuples(results):
-        cleanedResults = []
-
-        # Unpack tuple
-        for i in results:
-            cleanedResults.append(float(i[0]))
-
-        return cleanedResults
-
-    def ifSnap(dataset):
-
-        sel = [Snap.average_participation]
-
-        results = session.query(*sel).\
-                  filter(Snap.year>2003).\
-                  filter(Snap.year<2015).all()
-
-        return unpackTuples(results)
-
-    def ifForeclosure(dataset):
-
-        sel = [Foreclosure.foreclosure_filings]
-
-        results = session.query(*sel).\
-                  filter(Foreclosure.year>2003).\
-                  filter(Foreclosure.year<2015).all()
-
-        return unpackTuples(results)
-
-    def getValues(dataset):
-        # Model table
-        class DB(Base):
-            __table__ = Base.metadata.tables[dataset]
-
-        sel = []
-
-        # Select and sum year columns in database
-        for i in range(2004,2015):
-            col = getattr(DB,str(i))
-            sel.append(func.sum(col))
-
-        # Query database
-        results = session.query(*sel).all()
-
-        cleanedResults = []
-
-        # Unpack tuple
-        for i in results[0]:
-            cleanedResults.append(float(i))
-
-        return cleanedResults
 
     datasetList = [dataset1,dataset2]
 

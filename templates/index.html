@@ -9,11 +9,20 @@
         <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
         <link rel="stylesheet" href="../static/styles/styles.css">
+
+
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    	<script>
+            $('#header').load('header.html');
+    	</script>
     </head>
 
     <body>
         <!-- navbar -->
-        <nav class="navbar navbar-toggleable-sm navbar-light bg-faded navbar-full">
+        <div class="header">
+            {% include 'header.html' %}
+        </div>
+        <!-- <nav class="navbar navbar-toggleable-sm navbar-light bg-faded navbar-full">
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -36,7 +45,7 @@
                     </li>
                 </ul>
             </div>
-        </nav>
+        </nav> -->
 
         <!--Mapbox Map Container-->
 
@@ -95,8 +104,8 @@
                           </div>
                         </div>
                         <!--JavaScript InPut-->
-                      <!--SWITCH BACK TO PROPER APP.JS FOLDER AFTER DEVELOPMENT-->  
-                      
+                      <!--SWITCH BACK TO PROPER APP.JS FOLDER AFTER DEVELOPMENT-->
+
                       <script type="text/javascript" src="../static/js/map.js"></script>
                       <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
                       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
@@ -117,20 +126,12 @@
               </div>
               <div>
               </div>
-            
+
 
         <!--Footer-->
-        <footer class="page-footer">
-              <div class="row" style="background:linear-gradient(90deg,#00ade6 0,#05e3d5)">
-                  <div class="col-12" style="height:5px">
-                  </div>
-              </div>
-                <div class="row" style="background-color:black; height:140px">
-                    </div>
-                </div>
-            </div>
-          </div>
-        </footer>
+        <div class="footer">
+            {% include 'footer.html' %}
+        </div>
 
         <!--Bootstrap JS/Jquery cdn-->
 

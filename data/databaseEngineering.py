@@ -28,6 +28,12 @@ def write_databases():
     # Create cleaned dataframes from raw sources
     # Convert DF into DB tables (and create primary key)
 
+    #### VIOLENT CRIME RATE ####
+    vcrData = ucrData('raw/ucr_violent_crime_rate_by_state.csv')
+    vcrData.to_sql(name='vcr', con=engine, if_exists ='replace', index=False)
+    conn.execute('ALTER TABLE vcr ADD PRIMARY KEY ("stateId");')
+    ####################
+
     #### VIOLENT CRIME ####
     violentCrimeData = ucrData('raw/ucr_violent_crime_total.csv')
     violentCrimeData.to_sql(name='violent_crime', con=engine, if_exists = 'replace', index=False)
