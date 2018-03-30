@@ -1,3 +1,5 @@
+baseURL = 'http://dme3x79mz2i5z.cloudfront.net'
+
 // Mapbox Token - AMS
 mapboxgl.accessToken = 'pk.eyJ1IjoiYW1zb3ciLCJhIjoiY2plbHBoaGQ2MWxnajMzbjV2eWVmam5kdiJ9.jFX6_Ms_zLtF7BDkw12hTw';
 
@@ -60,7 +62,7 @@ for (i = 0; i < layers.length; i++) {
 // Map Console Casualty Scale
 map.on('load', function() {
 
-  // d3.json('https://functional-vice.herokuapp.com/api/v1.0/schoolShootings/1995', function(err, data) {
+  // d3.json(baseURL + '/api/v1.0/schoolShootings/1995', function(err, data) {
   //   if (err) throw err;
   //
   //   // Create a month property value based on time
@@ -73,12 +75,12 @@ map.on('load', function() {
     //crime rate data endpoint //
     map.addSource('crimeData', {
       type: 'geojson',
-      data: 'https://functional-vice.herokuapp.com/api/v1.0/crimeRate/1995'
+      data: baseURL + '/api/v1.0/crimeRate/1995'
     });
     // shooting fatalities data endpoint //
     map.addSource('shootData', {
       type: 'geojson',
-      data: 'https://functional-vice.herokuapp.com/api/v1.0/schoolShootings/1995'
+      data: baseURL + '/api/v1.0/schoolShootings/1995'
     });
 
   // choropleth layer
@@ -184,11 +186,12 @@ map.on('load', function() {
     document.getElementById('slider').addEventListener('input', function(e) {
       var year = parseInt(e.target.value);
       // update the map
-      map.setFilter('shootings', ['==', ['number', ['get', 'YEAR']], year]);
-      map.setFilter('crime', ['==', ['number', ['get', 'YEAR']], year]);
+    
 
       document.getElementById('active-year').innerText = year;
       
+      map.getSource('shootData').setData(baseURL + '/api/v1.0/schoolShootings/' + year);
+      map.getSource('crimeData').setData(baseURL + '/api/v1.0/crime/' + year);
     });
 
     // Setting default filter value //
