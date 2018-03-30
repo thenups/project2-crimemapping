@@ -15,10 +15,11 @@ def choropleth_geojson(resultList,year):
             'type': 'Feature',
             'properties': {
                 'STATE': n[0],
-                'VIOLENT_CRIME': n[3],
-                'UNEMPLOYMENT':n[4],
-                'POPULATION':n[5],
-                'MURDER':n[6],
+                'VCR': n[3],
+                'VIOLENT_CRIME': n[4],
+                'UNEMPLOYMENT':n[5],
+                'POPULATION':n[6],
+                'MURDER':n[7],
                 'YEAR': int(year)
             },
             'geometry': {

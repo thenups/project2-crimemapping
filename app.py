@@ -47,6 +47,9 @@ Base = declarative_base()
 Base.metadata.reflect(engine)
 
 # State Data
+class Vcr(Base):
+    __table__ = Base.metadata.tables['vcr']
+
 class Violent_Crime(Base):
     __table__ = Base.metadata.tables['violent_crime']
 
@@ -110,7 +113,8 @@ def crime(year):
         ]
 
     # All tables to iterate through
-    tables = [[Violent_Crime.__table__.columns, Violent_Crime],
+    tables = [[Vcr.__table__.columns,Vcr],
+              [Violent_Crime.__table__.columns, Violent_Crime],
               [Unemployment.__table__.columns, Unemployment],
               [Population.__table__.columns, Population],
               [Murder.__table__.columns, Murder]
@@ -136,6 +140,7 @@ def crime(year):
     #     join(State_Coordinates, State_Coordinates.stateId==Vcr.stateId).all()
 
     results = session.query(*sel).\
+        join(Vcr, Vcr.stateId==State_Coordinates.stateId).\
         join(Violent_Crime, Violent_Crime.stateId==State_Coordinates.stateId).\
         join(Unemployment, Unemployment.stateId==State_Coordinates.stateId).\
         join(Population, Population.stateId==State_Coordinates.stateId).\
