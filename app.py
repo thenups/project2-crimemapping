@@ -107,7 +107,7 @@ def map():
 def gauges_tweets():
     """Return the gauges/tweets page"""
 
-    return render_template('guagepage.html')
+    return render_template('gaugepage.html')
 
 @app.route('/analysis')
 def analysis():
