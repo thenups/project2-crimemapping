@@ -112,17 +112,6 @@ def gauges_tweets():
 
     return render_template('gaugepage.html')
 
-@app.route('/analysis')
-def analysis():
-    """Return the analysis page"""
-
-    return render_template('analysis.html')
-
-@app.route('/bios')
-def bios():
-    """Return the bios page"""
-
-    return render_template('bios.html')
 
 @app.route('/api/v1.0/crime/<year>')
 def crime(year):
