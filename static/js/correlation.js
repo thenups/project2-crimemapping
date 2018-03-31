@@ -4,7 +4,8 @@
 // #######################################################
 
 // construct url for endpoint query
-var base_url = 'http://dme3x79mz2i5z.cloudfront.net'
+//var base_url = 'http://dme3x79mz2i5z.cloudfront.net'
+var base_url = 'https://functional-vice.herokuapp.com'
 
 
 // allow only two checkboxes to be selected by keeping track
