@@ -18,12 +18,23 @@
             {% include 'header.html' %}
         </div>
 
+
         <!--Container-->
-         <div class='container'>
+        <div class='container'>
+
             <div class="row">
-                <div class="col-lg-4 col-sm-12">
-                    <div class="selection-container">
-                      Pick Two Datasets to Gauge Correlation
+                <div class="col-lg-12">
+                    <h1>Gauge Page</h1>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="selectionContainer">
+                        <div id="selectionTitle">
+                            <h2>Pick Two Datasets to Gauge Correlation:</h2>
+                        </div>
                         <div id="checkboxes">
                             <input type="checkbox" name="dataGroup" value="violent_crime" id="c_violent_crime" />
                             <label class="checkselect" for="c_violent_crime">Violent Crime</label>
@@ -39,22 +50,32 @@
 
                             <input type="checkbox" name="dataGroup" value="snap" id="c_snap" />
                             <label class="checkselect" for="c_snap">Food Stamp Participation</label>
-
+                        </div>
+                        <div class="buttonContainer">
                             <input class="btn btn-primary" type="button" id="correlateBtn" value="Check Correlation" disabled="true" onClick="callAPI()"></input>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-8 col-sm-12">
-                    <div id="rGauge"></div>
-                </div>
-              </div>
-              <div class="row">
-                  <div class="col">
-                      <div id="stacked_line">
 
-                      </div>
-                  </div>
-              </div>
+                <div id="graphs" class="col-sm-12">
+                    <div id="gaugeGraph" class="col-md-8">
+                        <div id="rGauge"></div>
+                    </div>
+
+                    <div id="pGraph" class="col-md-4">
+                        <div id="pTitle">P-Value</div>
+                        <div id="pValue"></div>
+                        <div id="pImg"></div>
+                    </div>
+
+
+                    <div id="corrGraph" class="col-lg-12">
+                          <div id="lineGraph"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!--Footer-->
         <div class="footer">
