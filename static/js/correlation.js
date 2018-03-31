@@ -110,6 +110,7 @@ function displayR(response){
 
   // Path: may have to change to create a better triangle
     var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
+
         pathX = String(x),
         space = ' ',
         pathY = String(y),
