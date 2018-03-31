@@ -96,7 +96,7 @@ function displayR(response){
 
     // Trig to calc meter point
     var degrees = 180 - (level*90),
-    radius = .5;
+    radius = .75;
     var radians = degrees * Math.PI / 180;
     var x = radius * Math.cos(radians);
     var y = radius * Math.sin(radians);
@@ -153,8 +153,8 @@ function displayR(response){
                         }
                 }],
         title: "Pearson's Correlation Coefficient (R-Value)",
-        height: 450,
-        width: 760,
+        height: 550,
+        width: 660,
         xaxis: {zeroline:false, showticklabels:false,
               showgrid: true, range: [-1, 1]},
         yaxis: {zeroline:false, showticklabels:false,

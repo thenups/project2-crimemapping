@@ -25,6 +25,7 @@
     padding: 10px;
     display:flex;
     justify-content:space-between;
+    max-width:800px;
 }
 
 label {
@@ -41,7 +42,7 @@ label {
 }
 
 .buttonContainer {
-    width: 100%;
+    /* width: 100%; */
     text-align: center;
     margin-bottom: 10px;
 }
@@ -54,16 +55,20 @@ label {
     display: none;
 }
 
+.plot-container {
+  display: inline-block;
+  border: 1px solid black;
+}
 
 #gaugeGraph{
     display: inline-block;
     border: 1px solid black;
 }
 
-#pGraph {
+/* #pGraph {
     display: inline-block;
     border: 1px solid black;
-}
+} */
 
 #pTitle {
     width: 100%;
@@ -76,12 +81,21 @@ label {
 
 #pValue {
     margin: auto;
-    width: 50%;
+    /* width: 50%; */
     border-radius: 5px;
     background: red;
     padding: 5px;
     text-align: center;
 }
+
+.info-body {
+  min-height:70px;
+}
+
+.greyd {
+  background-color:#f5f5f5;
+}
+
 
 /*
 gold - c7b68fb3
