@@ -7,6 +7,7 @@ from flask import Flask, render_template, jsonify, redirect
 from flask import g
 from flask import Response
 from flask_cors import CORS
+from flask_restful import Resource, Api
 from flask_compress import Compress
 
 import sqlalchemy
@@ -90,6 +91,7 @@ session = Session(bind=engine)
 app = Flask(__name__)
 Compress(app)
 CORS(app)
+api = Api(app)
 
 # Full dashboard
 @app.route('/')
@@ -110,17 +112,6 @@ def gauges_tweets():
 
     return render_template('gaugepage.html')
 
-@app.route('/analysis')
-def analysis():
-    """Return the analysis page"""
-
-    return render_template('analysis.html')
-
-@app.route('/bios')
-def bios():
-    """Return the bios page"""
-
-    return render_template('bios.html')
 
 @app.route('/api/v1.0/crime/<year>')
 def crime(year):
@@ -200,6 +191,12 @@ def nationalData(dataset1,dataset2):
 
     return jsonify(v)
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    # response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    # response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 
 if __name__ == '__main__':
