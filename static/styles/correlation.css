@@ -1,0 +1,90 @@
+.selectionContainer {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #88888b;
+}
+
+#selectionTitle {
+    text-align: center;
+}
+
+.checkselect{
+    background-color: #fff;
+    color: #88888b;
+    border-radius: 5px;
+    border: 1px solid #88888b;
+    display: inline-block;
+    padding: 10px 20px;
+}
+
+#checkboxes {
+    margin: auto;
+    padding: 10px;
+    display:flex;
+    justify-content:space-between;
+}
+
+label {
+    margin-bottom: 0px;
+}
+
+#checkboxes input[type=checkbox]{
+    display: none;
+}
+
+#checkboxes input[type=checkbox]:checked + .checkselect{
+    background-color: #88888b;
+    color: #fff;
+}
+
+.buttonContainer {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#correlateBtn {
+    margin: auto;
+}
+
+#graphs {
+    display: none;
+}
+
+
+#gaugeGraph{
+    display: inline-block;
+    border: 1px solid black;
+}
+
+#pGraph {
+    display: inline-block;
+    border: 1px solid black;
+}
+
+#pTitle {
+    width: 100%;
+    background: #88888b;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+#pValue {
+    margin: auto;
+    width: 50%;
+    border-radius: 5px;
+    background: red;
+    padding: 5px;
+    text-align: center;
+}
+
+/*
+gold - c7b68fb3
+grey - 88888b
+blue - 014c8c
+*/

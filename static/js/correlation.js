@@ -1,10 +1,9 @@
 // #######################################################
 // Select datasets and display correlation guages
 // #######################################################
-
 // construct url for endpoint query
-// var baseURL = 'http://dme3x79mz2i5z.cloudfront.net/api/v1.0/national/sum/'
-var baseURL = 'https://functional-vice.herokuapp.com/api/v1.0/national/sum/'
+// var baseURL = 'http://dme3x79mz2i5z.cloudfront.net/api/v1.0/national/'
+var baseURL = 'https://functional-vice.herokuapp.com/api/v1.0/national/'
 
 // Array for order of selection
 var order = [];
@@ -43,6 +42,15 @@ $("[type=checkbox]").on('change', function() { // always use change event
 });
 
 
+
+var valueToName = {
+    'violent_crime' : 'Violent Crime',
+    'murder' : 'Murder',
+    'population':'Population',
+    'foreclosure':'Foreclosure',
+    'snap': 'Food Stamp Participation'
+}
+
 function callAPI(){
     // retrieve DOM elements that are checked
     var array = [];
@@ -69,35 +77,20 @@ function callAPI(){
         if (error) console.warn(error);
 
         displayR(response);
-        // displayP(response);
-        // displayLines(response);
+        displayP(response);
+        displayLines(response);
+        document.getElementById('graphs').style.display = 'inline';
     });
 };
 
 
 // ##########################################
-// Gauge graphs function (creates two)
+// Gauge graphs function
 // ##########################################
 
 function displayR(response){
 
-    // !! REPLACE TWO LINES BELOW WITH PROPER RESPONSE ACCESSORS !!
     var r = response['r-value']
-    var p = response['p-value']
-
-    console.log(r);
-    console.log(p);
-
-
-    // BELOW IS A MODIFIED VERSION OF THE Plotly.js GAUGE CHART TEMPLATE
-    // 2 CHARTS ARE BELOW, ONE FOR R-VALUE, ONE FOR P-VALUE
-
-    // ###### FIRST CHART: R-VALUE #####
-
-    // Enter a value between -1 and 1
-    // For easier trig, modify input variable to be between 0 and 2
-    // rather than -1 and 1
-    // check if correlation is positive or negative and adjust level
 
     var level = r + 1
 
@@ -116,11 +109,15 @@ function displayR(response){
         pathEnd = ' Z';
     var path = mainPath.concat(pathX,space,pathY,pathEnd);
 
+    // Calculate size
+    // var parentWidth = document.getElementById("gaugeGraph").offsetWidth,
+    //     parentHeight = document.getElementById("gaugeGraph").offsetHeight;
+
     var data = [{ type: 'scatter',
         x:[0], y:[0],
         marker: {size: 28, color:'850000'},
         showlegend: false,
-        name: "Pearson's Correlation Coefficient",
+        // name: "Pearson's Correlation Coefficient",
         // convert level back to true value for hover by subtracting 1
         text: level - 1,
         hoverinfo: 'text'},
@@ -154,13 +151,13 @@ function displayR(response){
                           color: '850000'
                         }
                 }],
-        title: "Pearson's Correlation Coefficient",
-        height: 500,
-        width: 500,
+        title: "Pearson's Correlation Coefficient (R-Value)",
+        height: 450,
+        width: 760,
         xaxis: {zeroline:false, showticklabels:false,
-              showgrid: false, range: [-1, 1]},
+              showgrid: true, range: [-1, 1]},
         yaxis: {zeroline:false, showticklabels:false,
-              showgrid: false, range: [-1, 1]}
+              showgrid: true, range: [-1, 1]}
                 };
 
     Plotly.newPlot('rGauge', data, layout);
@@ -168,56 +165,118 @@ function displayR(response){
 }
 
 
-  // ###########################################
-  // Line Graph Function
-  // ###########################################
+// ##########################################
+// Populate P-value (creates two)
+// ##########################################
 
-  function displayLines(response){
+function displayP(response){
+    $('#pSelectedImage').remove();
 
-          // !! CHANGE ACCESSORS TO FIT JSON !!
-          //var first_array = response.dataset1.value_array
-          //var second_array = response.dataset2.value_array
-          //var dataset1_name = reponse.dataset1.name
-          //var dataset2_name = response.dataset2.name
-          var year_array = [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014]
+    var p = response['p-value'];
+    var filePath = '../static/images/pvalue/';
 
-          // TEST VALUES:
-          var first_array = [1,2,3,4,5,6,7,8,9,10,11]
-          var second_array = [21,22,23,24,25,26,27,28,29,30,31]
-          var dataset1_name = "violent_crime"
-          var dataset2_name = "snap"
+    var images = {
+        'good': 'good.jpg',
+        'bad': 'bad.jpg',
+        'ugly': 'ugly.jpg',
+        'woah': 'woah.png',
+        'duh': 'duh.jpg'
+    };
 
-          // Below is modified Plotly stacked line chart template
-          var trace1 = {
-            x: year_array,
-            y: first_array,
-            name: dataset1_name,
-            type: 'scatter'
-          };
+    if (p>0.25) {
+        var status = 'ugly';
+    } else if (p>0.05) {
+        var status = 'bad';
+    } else if (p>0.0003) {
+        var status = 'good';
+    } else if (p<0.000001) {
+        var status = 'duh';
+    } else {
+        var status = 'woah'
+    };
 
-          var trace2 = {
-            x: year_array,
-            y: second_array,
-            name: dataset2_name,
-            xaxis: 'x2',
-            yaxis: 'y2',
-            type: 'scatter'
-          };
+    var imagePath = filePath+images[status];
 
-          var data = [trace1, trace2];
 
-          var layout = {
-            title: (dataset1_name + " and " + dataset2_name + " 2004-2014"),
-            yaxis: {domain: [0, 0.45]},
-            legend: {traceorder: 'reversed'},
-            xaxis2: {anchor: 'y2',
-                     title: 'Year'},
-            yaxis2: {domain: [0.55, 1]}
-          };
+    $('#pValue').text(p.toFixed(7));
 
-          Plotly.newPlot('stacked_line', data, layout);
+    $('#pImg').prepend($('<img>',{
+        id:'pSelectedImage',
+        src:imagePath,
+        class:'img-fluid'
+    }));
+}
 
-  }
+// ###########################################
+// Line Graph Function
+// ###########################################
+
+function displayLines(response){
+
+    // Get keys from response
+    var datasets = Object.keys(response)
+    console.log(datasets);
+    // Remove P and R value
+    var iR = datasets.indexOf('r-value');
+    var iP = datasets.indexOf('p-value');
+    datasets.splice( iR, 1 );
+    datasets.splice( iP, 1 );
+
+
+    // !! CHANGE ACCESSORS TO FIT JSON !!
+    var array1 = response[datasets[0]]
+    var array2 = response[datasets[1]]
+    var dataset1Name = datasets[0]
+    var dataset2Name = datasets[1]
+    var yearArray = [2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014]
+
+    console.log('array1',array1);
+    console.log('dataset name',dataset1Name);
+
+    console.log('array2',array2);
+    console.log('dataset name',dataset2Name);
+
+    // TEST VALUES:
+    // var first_array = [1,2,3,4,5,6,7,8,9,10,11]
+    // var second_array = [21,22,23,24,25,26,27,28,29,30,31]
+    // var dataset1_name = "violent_crime"
+    // var dataset2_name = "snap"
+
+    // Below is modified Plotly stacked line chart template
+    var trace1 = {
+        x: yearArray,
+        y: array1,
+        name: valueToName[dataset1Name],
+        type: 'scatter'
+    };
+
+    var trace2 = {
+        x: yearArray,
+        y: array2,
+        name: valueToName[dataset2Name],
+        yaxis: 'y2',
+        type: 'scatter'
+    };
+
+    var data = [trace1, trace2];
+
+    var layout = {
+        title: (valueToName[dataset1Name] + " and " + valueToName[dataset2Name] + " 2004-2014"),
+        xaxis: {title: 'Year'},
+        yaxis: {title: valueToName[dataset1Name]},
+        yaxis2: {title: valueToName[dataset2Name],
+                 overlaying: 'y',
+                 side: 'right'},
+        legend: {showlegend: true,
+                 "orientation": "h",
+                 x: 0,
+                 y: 1.15
+                },
+    };
+
+    Plotly.newPlot('lineGraph', data, layout);
+
+}
 
 
 
