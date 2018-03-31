@@ -5,6 +5,7 @@ import numpy as np
 
 from flask import Flask, render_template, jsonify, redirect
 from flask import g
+from flask import Response
 from flask_cors import CORS
 from flask_compress import Compress
 
@@ -107,7 +108,7 @@ def map():
 def gauges_tweets():
     """Return the gauges/tweets page"""
 
-    return render_template('guagepage.html')
+    return render_template('gaugepage.html')
 
 @app.route('/analysis')
 def analysis():
@@ -172,7 +173,7 @@ def schoolShootings(year):
 
     return jsonify(geoJson)
 
-@app.route('/api/v1.0/national/sum/<dataset1>/<dataset2>')
+@app.route('/api/v1.0/national/<dataset1>/<dataset2>')
 def nationalData(dataset1,dataset2):
 
     datasetList = [dataset1,dataset2]
@@ -193,6 +194,9 @@ def nationalData(dataset1,dataset2):
 
     v['r-value'] = r
     v['p-value'] = p
+
+    # resp = Response()
+    # resp.headers['Access-Control-Allow-Origin'] = '*'
 
     return jsonify(v)
 

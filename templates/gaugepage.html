@@ -9,72 +9,43 @@
         <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
         <link rel="stylesheet" href="../static/styles/styles.css">
+        <link rel="stylesheet" href="../static/styles/correlation.css">
     </head>
 
     <body>
-        <!-- navbar -->
-        <nav class="navbar navbar-toggleable-sm navbar-light bg-faded navbar-full">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="nav-link" id=homeButton href="index.html">Functional_Vice()</a>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Analysis
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="/">Details</a>
+        <!-- header -->
+        <div class="header">
+            {% include 'header.html' %}
+        </div>
+
+        <!--Container-->
+         <div class='container'>
+            <div class="row">
+                <div class="col-lg-4 col-sm-12">
+                    <div class="selection-container">
+                      Pick Two Datasets to Gauge Correlation
+                        <div id="checkboxes">
+                            <input type="checkbox" name="dataGroup" value="violent_crime" id="c_violent_crime" />
+                            <label class="checkselect" for="c_violent_crime">Violent Crime</label>
+
+                            <input type="checkbox" name="dataGroup" value="murder" id="c_murder" />
+                            <label class="checkselect" for="c_murder">Murder</label>
+
+                            <input type="checkbox" name="dataGroup" value="population" id="c_population" />
+                            <label class="checkselect" for="c_population">Population</label>
+
+                            <input type="checkbox" name="dataGroup" value="foreclosure" id="c_foreclosure" />
+                            <label class="checkselect" for="c_foreclosure">Foreclosure</label>
+
+                            <input type="checkbox" name="dataGroup" value="snap" id="c_snap" />
+                            <label class="checkselect" for="c_snap">Food Stamp Participation</label>
+
+                            <input class="btn btn-primary" type="button" id="correlateBtn" value="Check Correlation" disabled="true" onClick="callAPI()"></input>
                         </div>
-                    </li>
-                    <li class="nav-item">
-                            <a class="nav-link" href="gauges_tweets.html">Correlation</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Data</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
-        <!--Mapbox Map Container-->
-
-          <div class='container-fluid'>
-
-
-              <div class="row">
-                <div class="col-lg-4 col-sm-12">
-                  <div class="selection-container">
-                    <form name="select_datasets">
-                      <b>Pick Two Datasets to Gauge Correlation</b>
-                      <br>
-                      <br>
-                      <input class="set_checkbox" type="checkbox" name="violent_crime" onClick="return keepCount()"> Violent Crime
-                      <br>
-                      <input class="set_checkbox" type="checkbox" name="murder" onClick="return keepCount()"> Murder
-                      <br>
-                      <input class="set_checkbox" type="checkbox" name="population" onClick="return keepCount()"> Population
-                      <br>
-                      <input class="set_checkbox" type="checkbox" name="school_shootings" onClick="return keepCount()"> School Shootings
-                      <br>
-                      <input class="set_checkbox" type="checkbox" name="foreclosure" onClick="return keepCount()"> Foreclosure
-                      <br>
-                      <input class="set_checkbox" type="checkbox" name="snap" onClick="return keepCount()"> Food Stamp Participation
-                      <br>
-                      <br>
-                      <input type="button" value="Check Correlation" onClick="callAPI()">
-                      <br>
-                    </form>
-                  </div>
+                    </div>
                 </div>
-                <div class="col-lg-4 col-sm-12">
-                  <div id="r_gauge">
-                  </div>
-                </div>
-                <div class="col-lg-4 col-sm-12">
-                  <div id="p_gauge">
-                  </div>
+                <div class="col-lg-8 col-sm-12">
+                    <div id="rGauge"></div>
                 </div>
               </div>
               <div class="row">
@@ -84,28 +55,19 @@
                       </div>
                   </div>
               </div>
-            <div>
-          </div>
 
         <!--Footer-->
-        <footer class="page-footer">
-              <div class="row" style="background:linear-gradient(90deg,#00ade6 0,#05e3d5)">
-                  <div class="col-12" style="height:5px">
-                  </div>
-              </div>
-                <div class="row" style="background-color:black; height:140px">
-                    </div>
-                </div>
-            </div>
-        </footer>
+        <div class="footer">
+            {% include 'footer.html' %}
+        </div>
 
         <!--Bootstrap JS/Jquery cdn-->
         <!--JavaScript InPut-->
-      <script type="text/javascript" src="../static/js/correlation.js"></script>
-      <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script type="text/javascript" src="../static/js/correlation.js"></script>
 
     </body>
 </html>
