@@ -20,6 +20,7 @@
 
 
         <!--Container-->
+        <div class="greyd">
         <div class='container'>
 
             <div class="row">
@@ -27,8 +28,6 @@
                     <h1>Gauge Page</h1>
                 </div>
             </div>
-
-
             <div class="row">
                 <div class="col-lg-12">
                     <div class="selectionContainer">
@@ -51,35 +50,39 @@
                             <input type="checkbox" name="dataGroup" value="snap" id="c_snap" />
                             <label class="checkselect" for="c_snap">Food Stamp Participation</label>
                         </div>
+
                         <div class="buttonContainer">
                             <input class="btn btn-primary" type="button" id="correlateBtn" value="Check Correlation" disabled="true" onClick="callAPI()"></input>
                         </div>
                     </div>
                 </div>
-
-                <div id="graphs" class="col-sm-12">
-                    <div id="gaugeGraph" class="col-md-8">
-                        <div id="rGauge"></div>
-                    </div>
-
-                    <div id="pGraph" class="col-md-4">
-                        <div id="pTitle">P-Value</div>
-                        <div id="pValue"></div>
-                        <div id="pImg"></div>
-                    </div>
-
-
-                    <div id="corrGraph" class="col-lg-12">
-                          <div id="lineGraph"></div>
-                    </div>
-                </div>
+              </div>
             </div>
-        </div>
 
+            <div class="info-body">
+              <div class='container'>
+                <div class="row">
+                  <div id="corrGraph" class="col-lg-12">
+                        <div id="lineGraph"></div>
+                  </div>
+                </div>
 
-        <!--Footer-->
-        <div class="footer">
-            {% include 'footer.html' %}
+                <div class="row">
+                  <div id="graphs" class="col-lg-8 col-md-3">
+                    <div id="gaugeGraph"></div>
+                    <div id="rGauge"></div>
+                  </div>
+
+                  <!-- </div>
+                  <div class="row"> -->
+                <div id="pGraph" class="col-lg-4">
+                    <div id="pTitle">P-Value</div>
+                    <div id="pValue"></div>
+                    <div id="pImg"></div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!--Bootstrap JS/Jquery cdn-->
@@ -89,6 +92,12 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
         <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
         <script type="text/javascript" src="../static/js/correlation.js"></script>
+      </div>
+    </div>
+
+        <div class="footer">
+            {% include 'footer.html' %}
+        </div>
 
     </body>
 </html>

@@ -9,8 +9,6 @@
         <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css' rel='stylesheet' />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
         <link rel="stylesheet" href="../static/styles/styles.css">
-
-
         <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     	<script>
             $('#header').load('header.html');
@@ -18,38 +16,15 @@
     </head>
 
     <body>
-        <!-- navbar -->
+        <!-- Header -->
         <div class="header">
             {% include 'header.html' %}
         </div>
-        <!-- <nav class="navbar navbar-toggleable-sm navbar-light bg-faded navbar-full">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <a class="nav-link" id=homeButton href="index.html">Functional_Vice()</a>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Analysis
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="/">Details</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                            <a class="nav-link" href="/gauges_tweets">Correlation</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Data</a>
-                    </li>
-                </ul>
-            </div>
-        </nav> -->
 
         <!--Mapbox Map Container-->
-
-          <div class='container-fluid'>
+        <div class="greyd">
+          <h1 style="color:#f5f5f5">Choropleth</h1>
+          <div class="container-fluid">
             <div class="row">
               <div class="col-lg-10 col-sm-12">
                 <div class="map-container">
@@ -72,18 +47,13 @@
               </div>
             </div>
             <div class="col-lg-2 col-sm-12" style="margin-left:none;">
+              <div class="row">
                 <div id='features'><div id='pd'><p>Hover over a state!</p></div>
               </div>
-            </div>
-          </div>
-
-        <!-- Map Console -->
-            <div class="row">
-              <div class="col-lg-4 col-sm-12">
+              <div class="row">
                 <div id='console'>
                       <!--To be: Crime Detail Console-->
                       <h1>Map Filter</h1>
-                      <p>Data: <a href='https://functional-vice.herokuapp.com/api/v1.0/schoolShootings/1995'>School Shootings, </a><a href='https://functional-vice.herokuapp.com/api/v1.0/crimeRate/1995'>Crime Rate</a> </p>
                         <!--To be: Crime Events Scale for reference-->
 
                         <!--To be: Timeline Slide Bar-->
@@ -95,12 +65,6 @@
                         <div class='session'>
                           <!-- <h2>Category Layers</h2> -->
                           <div class='row' id='filters'>
-                            <!-- <input id='all' type='radio' name='toggle' value='all' checked='checked'>
-                            <label for='all'>All</label>
-                            <input id='shootings' type='radio' name='toggle' value='weekday'>
-                            <label for='weekday'>Weekday</label>
-                            <input id='weekend' type='radio' name='toggle' value='weekend'>
-                            <label for='weekend'>Weekend</label> -->
                           </div>
                         </div>
                         <!--JavaScript InPut-->
@@ -112,21 +76,12 @@
                       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
                       <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
                   </div>
-              </div>
-                <div class="col-lg-6 col-sm-12">
-                  <div class="bubble-container">
-                      <p>Bubble Plot</p>
-                  </div>
-                </div>
-                <div class="col-lg-2 col-sm-12">
-                  <div class="tweet-container">
-                    <p>Tweet Feed</p>
-                  </div>
                 </div>
               </div>
-              <div>
-              </div>
-
+            </div>
+          </div>
+        </div>
+      </div>
 
         <!--Footer-->
         <div class="footer">

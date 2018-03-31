@@ -7,7 +7,6 @@ from flask import Flask, render_template, jsonify, redirect
 from flask import g
 from flask import Response
 from flask_cors import CORS
-from flask_restful import Resource, Api
 from flask_compress import Compress
 
 import sqlalchemy
@@ -91,7 +90,6 @@ session = Session(bind=engine)
 app = Flask(__name__)
 Compress(app)
 CORS(app)
-api = Api(app)
 
 # Full dashboard
 @app.route('/')

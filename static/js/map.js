@@ -8,7 +8,7 @@ currentpropertykey = 'MURDER'
 currentlayerid = 'Murders'
 
 function initiateMap(){
-  
+
   // Mapbox Token - AMS
   mapboxgl.accessToken = 'pk.eyJ1IjoiYW1zb3ciLCJhIjoiY2plbHBoaGQ2MWxnajMzbjV2eWVmam5kdiJ9.jFX6_Ms_zLtF7BDkw12hTw';
 
@@ -30,7 +30,7 @@ function initiateMap(){
 // creation of a custom legend for the displayed layer,
 // as well as setting the property the hover function is reading from
 function addToggle(layerid, legend_ranges, layerid, propertykey, color_list){
-      
+
   var id = layerid;
 
   var link = document.createElement('a');
@@ -48,7 +48,7 @@ function addToggle(layerid, legend_ranges, layerid, propertykey, color_list){
       //   button.setAttribute('class', 'inactive')
       // }
 
-      
+
 
       var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
 
@@ -81,7 +81,7 @@ function setChoroplethLegend(layer_rangelist, color_list){
   if (layer_rangelist){
     var rangelist = layer_rangelist;
     var colors = color_list;
-  
+
     for (i = 0; i < rangelist.length; i++) {
       var range = rangelist[i];
       var color = colors[i];
@@ -89,14 +89,14 @@ function setChoroplethLegend(layer_rangelist, color_list){
       var key = document.createElement('span');
       key.className = 'legend-key';
       key.style.backgroundColor = color;
-  
+
       var value = document.createElement('span');
       value.innerHTML = range;
       item.appendChild(key);
       item.appendChild(value);
       legend.appendChild(item);
     }
-  } 
+  }
 }
 
 function addChoroplethToggle(sourcename, defaultyear, layerid, propertykey, stopmarker_list, color_list, legend_ranges){
@@ -129,8 +129,8 @@ function addChoroplethToggle(sourcename, defaultyear, layerid, propertykey, stop
     layout: {visibility: "none"}
   }, 'admin-2-boundaries-dispute');
 
-  addToggle(layerid, legend_ranges, layerid, propertykey, color_list)    
-  
+  addToggle(layerid, legend_ranges, layerid, propertykey, color_list)
+
 
 }
 
@@ -184,40 +184,40 @@ map.on('load', function() {
     addChoroplethToggle('violentcrimeData',
                          1995,
                         'Violent Crimes',
-                        'VIOLENT_CRIME', 
-                        [0,10000,20000,30000,40000,50000,100000], 
-                        ['#B557FF', '#A049EE', '#8B3BDE', '#762ECE', '#6120BE', '#4C12AE', '#38059E'], 
+                        'VIOLENT_CRIME',
+                        [0,10000,20000,30000,40000,50000,100000],
+                        ['#B557FF', '#A049EE', '#8B3BDE', '#762ECE', '#6120BE', '#4C12AE', '#38059E'],
                         ['0-10 Thousand', '10-20 Thousand', '20-30 Thousand', '30-40 Thousand', '40-50 Thousand', '50-60 Thousand', '60+ Thousand']
                       )
-    addChoroplethToggle('murderData', 
-                        1995, 
-                        'Murders', 
-                        'MURDER', 
-                        [0,25,50,100,200,500,1000], 
-                        ['#FB9441', '#EC7B3C', '#DE6338', '#D04B33', '#C1332F', '#B31B2A', '#A50326'], 
+    addChoroplethToggle('murderData',
+                        1995,
+                        'Murders',
+                        'MURDER',
+                        [0,25,50,100,200,500,1000],
+                        ['#FB9441', '#EC7B3C', '#DE6338', '#D04B33', '#C1332F', '#B31B2A', '#A50326'],
                         ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500+'])
-    addChoroplethToggle('populationData', 
-                        1995, 
-                        'Population', 
-                        'POPULATION', 
+    addChoroplethToggle('populationData',
+                        1995,
+                        'Population',
+                        'POPULATION',
                         [0,2000000,4000000,6000000,8000000,10000000,12000000],
-                        ['#5DD600', '#53C200', '#49AF00', '#409B00', '#368800', '#2C7400', '#236100'], 
+                        ['#5DD600', '#53C200', '#49AF00', '#409B00', '#368800', '#2C7400', '#236100'],
                         ['0-2 Million', '2-4 Million', '4-6 Million', '6-8 Million', '8-10 Million', '10-12 Million', '12+ Million'])
-    addChoroplethToggle('unemploymentData', 
-                        1995, 
-                        'Unemployment', 
-                        'UNEMPLOYMENT', 
-                        [0,1,2,3,4,5,6], 
-                        ['#7AA1FF', '#4658AE', '#5174CA', '#3D5EB0', '#284795', '#14317B', '#001B61'], 
+    addChoroplethToggle('unemploymentData',
+                        1995,
+                        'Unemployment',
+                        'UNEMPLOYMENT',
+                        [0,1,2,3,4,5,6],
+                        ['#7AA1FF', '#4658AE', '#5174CA', '#3D5EB0', '#284795', '#14317B', '#001B61'],
                         ['0-2%', '2-4%', '4-6%', '6-8%', '8-10%', '10-12%', '14+'])
-    addChoroplethToggle('vcrData', 
-                        1995, 
-                        'Violent Crime Rate (Per 100,000)', 
-                        'VCR', [0,100,200,300,400,500,600], 
-                        ['#B557FF', '#A049EE', '#8B3BDE', '#762ECE', '#6120BE', '#4C12AE', '#38059E'], 
+    addChoroplethToggle('vcrData',
+                        1995,
+                        'Violent Crime Rate', 
+                        'VCR', [0,100,200,300,400,500,600],
+                        ['#B557FF', '#A049EE', '#8B3BDE', '#762ECE', '#6120BE', '#4C12AE', '#38059E'],
                         ['0-100', '100-200', '200-300', '300-400', '400-500', '500-600', '600+'])
-    
-    
+
+
 
     addShootingsToggle()
 
@@ -240,15 +240,15 @@ map.on('load', function() {
         }
     });
 
-    
+
 
     // Filter Through Years //
     document.getElementById('slider').addEventListener('input', function(e) {
       var year = parseInt(e.target.value);
-      
+
       // update the slider readout
       document.getElementById('active-year').innerText = year;
-      
+
       map.getSource('shootData').setData(baseURL + '/api/v1.0/schoolShootings/' + year);
       map.getSource('violentcrimeData').setData(baseURL + '/api/v1.0/crime/' + year);
       map.getSource('murderData').setData(baseURL + '/api/v1.0/crime/' + year);
