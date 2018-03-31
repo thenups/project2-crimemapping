@@ -7,6 +7,7 @@ from flask import Flask, render_template, jsonify, redirect
 from flask import g
 from flask import Response
 from flask_cors import CORS
+from flask_restful import Resource, Api
 from flask_compress import Compress
 
 import sqlalchemy
